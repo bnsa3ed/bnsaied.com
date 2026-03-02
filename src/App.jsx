@@ -56,6 +56,11 @@ const PROJECTS = [
   }
 ];
 
+const AI_VIDEOS = [
+  "https://cdn.bnsaied.com/Ai/backyardai.mp4",
+  ...Array(7).fill(null)
+];
+
 export default function App() {
   const containerRef = useRef(null);
   const cursorRef = useRef(null);
@@ -113,6 +118,17 @@ export default function App() {
           stagger: 0.2,
           ease: 'power3.out',
           delay: 1.4
+        }
+      );
+
+      gsap.fromTo(".hero-bg-anim",
+        { opacity: 0, scale: 1.05 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 2,
+          ease: 'power2.out',
+          delay: 0.8
         }
       );
 
@@ -282,8 +298,18 @@ export default function App() {
       </nav>
 
       {/* ----------------- HERO SECTION ----------------- */}
-      <section className="relative h-[100dvh] flex flex-col justify-center px-6 md:px-20 pt-20">
-        <div className="max-w-7xl w-full mx-auto">
+      <section className="relative h-[100dvh] flex flex-col justify-center px-6 md:px-20 pt-20 overflow-hidden">
+        {/* Abstract Background Portrait */}
+        <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-end md:justify-center opacity-0 hero-bg-anim">
+          <img
+            src="/IMG_0838.PNG"
+            alt="Hero Background"
+            className="w-auto h-[120%] object-cover grayscale opacity-[0.05] mix-blend-screen translate-x-1/4 md:translate-x-1/3"
+            style={{ maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)', WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)' }}
+          />
+        </div>
+
+        <div className="max-w-7xl w-full mx-auto relative z-10">
           <h1 className="text-drama text-5xl sm:text-7xl md:text-9xl leading-[1.1] md:leading-[0.9] overflow-hidden -ml-1 md:-ml-2 mb-4">
             {"Mohamed Said.".split('').map((char, index) => (
               <span key={index} className="inline-block hero-char">
@@ -303,7 +329,7 @@ export default function App() {
 
             <div className="hero-fade flex items-center gap-3">
               <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-mono-small">Available for work — 2025</span>
+              <span className="text-mono-small">Available for work — 2026</span>
             </div>
           </div>
         </div>
@@ -489,15 +515,28 @@ export default function App() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {[...Array(8)].map((_, idx) => (
+          {AI_VIDEOS.map((videoUrl, idx) => (
             <div key={idx} className="aspect-video bg-surface/30 rounded-[2rem] border border-surface flex flex-col items-center justify-center p-8 relative overflow-hidden group hover:bg-surface/50 transition-colors">
-              <div className="absolute inset-0 bg-gradient-to-tr from-accent/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="w-12 h-12 rounded-full border border-accent/30 flex items-center justify-center relative mb-4 group-hover:scale-110 transition-transform">
-                <div className="w-2 h-2 rounded-full bg-accent animate-ping absolute" />
-                <div className="w-2 h-2 rounded-full bg-accent relative" />
-              </div>
-              <span className="font-mono text-xs text-accent tracking-widest uppercase text-center">Processing</span>
-              <span className="opacity-40 text-[10px] mt-2 text-center uppercase tracking-widest">Incoming Render</span>
+              {videoUrl ? (
+                <video
+                  src={videoUrl}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                />
+              ) : (
+                <>
+                  <div className="absolute inset-0 bg-gradient-to-tr from-accent/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="w-12 h-12 rounded-full border border-accent/30 flex items-center justify-center relative mb-4 group-hover:scale-110 transition-transform">
+                    <div className="w-2 h-2 rounded-full bg-accent animate-ping absolute" />
+                    <div className="w-2 h-2 rounded-full bg-accent relative" />
+                  </div>
+                  <span className="font-mono text-xs text-accent tracking-widest uppercase text-center">Processing</span>
+                  <span className="opacity-40 text-[10px] mt-2 text-center uppercase tracking-widest">Incoming Render</span>
+                </>
+              )}
             </div>
           ))}
         </div>
@@ -627,7 +666,7 @@ export default function App() {
 
         {/* Footer */}
         <div className="max-w-7xl mx-auto mt-12 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-sm text-text/50 font-sans">Mohamed Said © 2025</div>
+          <div className="text-sm text-text/50 font-sans">Mohamed Said © 2026</div>
 
           <div className="flex items-center gap-8">
             <a href="https://www.linkedin.com/in/bnsaied" target="_blank" rel="noreferrer" className="text-text/50 hover:text-text transition-colors"><Linkedin className="w-5 h-5" /></a>
