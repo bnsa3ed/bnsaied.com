@@ -217,8 +217,8 @@ export default function App() {
   // Custom Cursor
   useEffect(() => {
     let ctx = gsap.context(() => {
-      const xTo = gsap.quickTo(cursorRef.current, "x", { duration: 0.3, ease: "power3", delay: 0.012 });
-      const yTo = gsap.quickTo(cursorRef.current, "y", { duration: 0.3, ease: "power3", delay: 0.012 });
+      const xTo = gsap.quickTo(cursorRef.current, "x", { duration: 0.1, ease: "power3.out" });
+      const yTo = gsap.quickTo(cursorRef.current, "y", { duration: 0.1, ease: "power3.out" });
 
       const moveCursor = (e) => {
         xTo(e.clientX);
@@ -299,14 +299,22 @@ export default function App() {
 
       {/* ----------------- HERO SECTION ----------------- */}
       <section className="relative h-[100dvh] flex flex-col justify-center px-6 md:px-20 pt-20 overflow-hidden">
-        {/* Abstract Background Portrait */}
-        <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-end md:justify-center opacity-0 hero-bg-anim">
-          <img
-            src="/IMG_0838.PNG"
-            alt="Hero Background"
-            className="w-auto h-[120%] object-cover grayscale opacity-[0.05] mix-blend-screen translate-x-1/4 md:translate-x-1/3"
-            style={{ maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)', WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)' }}
-          />
+        {/* Abstract Creative Background */}
+        <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-end md:justify-center overflow-hidden opacity-0 hero-bg-anim">
+          {/* Subtle glowing ambient light */}
+          <div className="absolute right-[-10%] top-[10%] w-[600px] h-[600px] rounded-full bg-accent/20 blur-[120px] mix-blend-screen animate-[pulse_10s_ease-in-out_infinite]" />
+
+          {/* Geometric wireframe accent */}
+          <div className="w-[150%] h-[150%] md:w-[120%] md:h-[120%] absolute -right-1/4 top-[-20%] opacity-20 animate-[spin_120s_linear_infinite]">
+            <svg viewBox="0 0 100 100" className="w-full h-full text-accent" style={{ mixBlendMode: 'screen' }}>
+              <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="0.05" />
+              <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="0.1" strokeDasharray="1 3" />
+              <circle cx="50" cy="50" r="32" fill="none" stroke="currentColor" strokeWidth="0.05" />
+              <path d="M50,2 L50,98 M2,50 L98,50" stroke="currentColor" strokeWidth="0.05" strokeDasharray="1 5" />
+              <circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" strokeWidth="0.1" />
+              <circle cx="50" cy="50" r="5" fill="currentColor" opacity="0.4" />
+            </svg>
+          </div>
         </div>
 
         <div className="max-w-7xl w-full mx-auto relative z-10">
@@ -516,7 +524,22 @@ export default function App() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {AI_VIDEOS.map((videoUrl, idx) => (
-            <div key={idx} className="aspect-video bg-surface/30 rounded-[2rem] border border-surface flex flex-col items-center justify-center p-8 relative overflow-hidden group hover:bg-surface/50 transition-colors">
+            <div
+              key={idx}
+              className={cn("aspect-video bg-surface/30 rounded-[2rem] border border-surface flex flex-col items-center justify-center p-8 relative overflow-hidden group transition-colors", videoUrl ? "cursor-pointer hover:bg-surface/50" : "")}
+              onClick={() => {
+                if (videoUrl) {
+                  setLightboxData({
+                    title: 'Synthesized Reality',
+                    type: 'AI Generation',
+                    desc: 'Fully generated sequence using advanced prompt engineering and AI video models. No traditional camera was used for this footage.',
+                    video: videoUrl
+                  });
+                }
+              }}
+              onMouseEnter={() => videoUrl && setIsHovering(true)}
+              onMouseLeave={() => videoUrl && setIsHovering(false)}
+            >
               {videoUrl ? (
                 <video
                   src={videoUrl}
