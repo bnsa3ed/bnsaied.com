@@ -58,7 +58,9 @@ const PROJECTS = [
 
 const AI_VIDEOS = [
   "https://cdn.bnsaied.com/Ai/backyardai.mp4",
-  ...Array(7).fill(null)
+  "https://cdn.bnsaied.com/Ai/ai-showcase.mp4",
+  "https://cdn.bnsaied.com/Ai/financial-awareness.mp4",
+  ...Array(5).fill(null)
 ];
 
 export default function App() {
