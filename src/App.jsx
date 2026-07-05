@@ -63,6 +63,69 @@ const AI_VIDEOS = [
   ...Array(5).fill(null)
 ];
 
+const PRODUCTS = [
+  {
+    id: "p1",
+    name: "CV Builder",
+    tagline: "ATS-grade English CVs in 5 minutes",
+    url: "https://cvbuilder.dalilklabs.com",
+    image: "https://cdn.bnsaied.com/products/cvbuilder.png",
+    what: "Free Arabic-first résumé builder with an AI assistant, live A4 preview, and ATS-readiness scoring.",
+    stat: "98%",
+    statLabel: "ATS compatibility"
+  },
+  {
+    id: "p2",
+    name: "ReferralShare",
+    tagline: "Viral referral engine for workshops",
+    url: "https://referral.dalilklabs.com",
+    image: "https://cdn.bnsaied.com/products/referral.png",
+    what: "Gamified referral system with live leaderboards and WhatsApp-native sharing that turns every student into a salesperson.",
+    stat: "~2,000",
+    statLabel: "participants/campaign"
+  },
+  {
+    id: "p3",
+    name: "TOEFL Compass",
+    tagline: "Know your target school's required score in 1 minute",
+    url: "https://toeflcompass.dalilklabs.com",
+    image: "https://cdn.bnsaied.com/products/toeflcompass.png",
+    what: "Free lookup across hundreds of universities with cited sources — a study-abroad lead-gen magnet.",
+    stat: "100s",
+    statLabel: "universities indexed"
+  },
+  {
+    id: "p4",
+    name: "Career Explorer",
+    tagline: "AI career discovery on real Saudi-market data",
+    url: "https://careerexplorer.dalilklabs.com",
+    image: "https://cdn.bnsaied.com/products/careerexplorer.png",
+    what: "AI turns experience into a career identity and matches you to real occupations across 14 Vision-2030 sectors.",
+    stat: "14",
+    statLabel: "Vision-2030 sectors"
+  },
+  {
+    id: "p5",
+    name: "Spelling Trainer",
+    tagline: "Gamified English spelling, A1 to C1",
+    url: "https://spelling.dalilklabs.com",
+    image: "https://cdn.bnsaied.com/products/spelling.png",
+    what: "Client-side spelling trainer with ElevenLabs audio, character-level feedback, streaks, and daily challenges.",
+    stat: "150+",
+    statLabel: "words across 3 levels"
+  },
+  {
+    id: "p6",
+    name: "Personalized English Guide",
+    tagline: "A custom 15–28 page English PDF, in minutes",
+    url: "https://english-guide.dalilk.com",
+    image: "https://cdn.bnsaied.com/products/english-guide.png",
+    what: "AI generates a hyper-personalized English reference PDF (phrases, vocab, templates) and emails it — built on Cloudflare Workers.",
+    stat: "50/day",
+    statLabel: "design throughput"
+  }
+];
+
 export default function App() {
   const containerRef = useRef(null);
   const cursorRef = useRef(null);
@@ -511,6 +574,49 @@ export default function App() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ----------------- PRODUCTS BUILT SECTION ----------------- */}
+      <section id="products" className="py-32 px-6 md:px-20 max-w-7xl mx-auto border-t border-surface">
+        <div className="mb-16">
+          <span className="text-mono-small text-accent mb-4 block">Shipped Software</span>
+          <h2 className="text-4xl md:text-6xl text-drama mb-4">Products Built.</h2>
+          <p className="text-lg text-text/60 max-w-2xl font-light">
+            Six AI-driven products I designed, built, and shipped for Dalilk Academy — a free-utility engine that captures leads and routes them into paid courses.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {PRODUCTS.map((p) => (
+            <a
+              key={p.id}
+              href={p.url}
+              target="_blank"
+              rel="noreferrer"
+              className="project-card relative group overflow-hidden rounded-4xl bg-surface/50 block"
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
+            >
+              <div className="aspect-[16/10] w-full overflow-hidden bg-black/50">
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  loading="lazy"
+                  className="w-full h-full object-cover object-top grayscale opacity-70 group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]"
+                />
+              </div>
+              <div className="p-6">
+                <div className="flex items-baseline justify-between gap-3 mb-2">
+                  <h3 className="text-xl font-serif text-drama">{p.name}</h3>
+                  <span className="text-accent text-mono-small whitespace-nowrap">{p.stat} <span className="text-text/40">{p.statLabel}</span></span>
+                </div>
+                <p className="text-mono-small text-accent/80 mb-3">{p.tagline}</p>
+                <p className="text-text/60 text-sm font-light leading-relaxed">{p.what}</p>
+                <span className="inline-block mt-4 text-mono-small text-text/50 group-hover:text-accent transition-colors">View live product →</span>
+              </div>
+            </a>
+          ))}
         </div>
       </section>
 
