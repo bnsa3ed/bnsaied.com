@@ -120,9 +120,9 @@ const PRODUCTS = [
     tagline: "A custom 15–28 page English PDF, in minutes",
     url: "https://english-guide.dalilk.com",
     image: "https://cdn.bnsaied.com/products/english-guide.png",
-    what: "AI generates a hyper-personalized English reference PDF (phrases, vocab, templates) and emails it — built on Cloudflare Workers.",
-    stat: "50/day",
-    statLabel: "design throughput"
+    what: "AI generates a hyper-personalized English reference PDF (phrases, vocab, templates) and emails it — now 800+ users/week and growing, cited by the company as a significant driver of new course sales.",
+    stat: "800+/wk",
+    statLabel: "users, growing"
   }
 ];
 
