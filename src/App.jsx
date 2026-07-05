@@ -80,9 +80,9 @@ const PRODUCTS = [
     tagline: "Viral referral engine for workshops",
     url: "https://referral.dalilklabs.com",
     image: "https://cdn.bnsaied.com/products/referral.png",
-    what: "Gamified referral system with live leaderboards and WhatsApp-native sharing that turns every student into a salesperson.",
-    stat: "~2,000",
-    statLabel: "participants/campaign"
+    what: "Gamified referral system with live leaderboards and WhatsApp-native sharing — drove ~24K visits and ~15K signups across live masterclass campaigns, peaking at ~1.6M API requests/month.",
+    stat: "~15K",
+    statLabel: "signups driven"
   },
   {
     id: "p3",
