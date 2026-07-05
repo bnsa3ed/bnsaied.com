@@ -78,7 +78,7 @@ const PRODUCTS = [
     id: "p2",
     name: "ReferralShare",
     tagline: "Viral referral engine for workshops",
-    url: "https://referral.dalilklabs.com",
+    url: "https://referral.dalilklabs.com/p/d4english/english-speaking-masterclass-11jul-1782996091263/leaderboard",
     image: "https://cdn.bnsaied.com/products/referral.png",
     what: "Gamified referral system with live leaderboards and WhatsApp-native sharing — drove ~24K visits and ~15K signups across live masterclass campaigns, peaking at ~1.6M API requests/month.",
     stat: "~15K",
