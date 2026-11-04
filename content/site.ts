@@ -28,8 +28,8 @@ export const profile = {
 
 export const hero = {
   past: {
-    en: "I edited video for eight years.",
-    ar: "عملت في المونتاج ثماني سنوات.",
+    en: "I edited video for seven years.",
+    ar: "عملت في المونتاج سبع سنوات.",
   } as L,
   present: {
     en: "Now I build AI products people use.",
@@ -48,11 +48,11 @@ export const hero = {
 /** A real sequence, so it is numbered by year. */
 export const story: { year: string; title: L; body: L }[] = [
   {
-    year: "2018",
+    year: "2019",
     title: { en: "The edit suite", ar: "غرفة المونتاج" },
     body: {
-      en: "Ads, brand films and reels. Eight years of pacing, cutting and deadlines.",
-      ar: "إعلانات وأفلام علامات تجارية وريلز. ثماني سنوات من الإيقاع والقص والمواعيد.",
+      en: "Ads, brand films and reels. Seven years of pacing, cutting and deadlines.",
+      ar: "إعلانات وأفلام علامات تجارية وريلز. سبع سنوات من الإيقاع والقص والمواعيد.",
     },
   },
   {

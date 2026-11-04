@@ -3,7 +3,7 @@ import type { L, Locale } from "@/lib/i18n";
 
 /**
  * The career as an edit, kept to a handful of readable clips.
- * Clips are laid out in order rather than to exact dates: 2018–2025 sits in the
+ * Clips are laid out in order rather than to exact dates: 2019–2025 sits in the
  * first 40%, 2026 fills the rest.
  */
 type Clip = { label: L; short: L; href: string; from: number; to: number; tone: "v1" | "v2" | "v3" | "a1" };
@@ -43,12 +43,12 @@ const tracks: { id: string; name: L; clips: Clip[] }[] = [
 ];
 
 const ruler: { at: number; label: string }[] = [
-  { at: 0, label: "2018" },
+  { at: 0, label: "2019" },
   { at: 32, label: "2025" },
   { at: 40, label: "2026" },
 ];
 
-/** On phones 2018–2025 shrinks to a quarter, so the 2026 clips stay readable. */
+/** On phones 2019–2025 shrinks to a quarter, so the 2026 clips stay readable. */
 const mobile = (x: number) => (x <= 40 ? (x * 25) / 40 : 25 + ((x - 40) * 75) / 60);
 
 export function HeroTimeline({ lang }: { lang: Locale }) {

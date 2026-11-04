@@ -67,7 +67,7 @@ export const ui = {
   },
   monitor: { en: "Source monitor", ar: "شاشة المصدر" },
   timelineCaption: {
-    en: "My career as an edit. 2018 to 2025 is compressed and 2026 is zoomed in; dates are approximate. Select a clip to open the project.",
+    en: "My career as an edit. 2019 to 2025 is compressed and 2026 is zoomed in; dates are approximate. Select a clip to open the project.",
     ar: "مسيرتي كمونتاج. من ٢٠١٨ إلى ٢٠٢٥ مضغوطة و٢٠٢٦ مكبّرة، والتواريخ تقريبية. اختر مقطعًا لتفتح المشروع.",
   },
   tracks: {

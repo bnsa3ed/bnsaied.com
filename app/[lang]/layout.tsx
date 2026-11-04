@@ -40,8 +40,8 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
       : "Mohamed Said, AI product builder";
   const description =
     lang === "ar"
-      ? "مونتير لثماني سنوات، والآن أبني منتجات ذكاء اصطناعي يستخدمها الناس. عربي أولًا."
-      : "Eight years as a video editor, now building AI products people use. Arabic-first by default.";
+      ? "مونتير لسبع سنوات، والآن أبني منتجات ذكاء اصطناعي يستخدمها الناس. عربي أولًا."
+      : "Seven years as a video editor, now building AI products people use. Arabic-first by default.";
   return {
     metadataBase: new URL("https://bnsaied.com"),
     title: { default: title, template: `%s | ${profile.name[lang]}` },
