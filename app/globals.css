@@ -158,3 +158,21 @@ a.clip:focus-visible {
     }
   }
 }
+
+/* Video players clip their children, so the focus ring sits inside the frame, in white.
+   On the play button it is a layer above the poster, which would otherwise cover an outline. */
+video.focus-inset:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: -6px;
+}
+button.focus-inset:focus-visible {
+  outline: none;
+}
+button.focus-inset:focus-visible::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 7px rgb(21 23 28 / 0.6);
+  pointer-events: none;
+}

@@ -7,7 +7,7 @@ import type { Locale } from "@/lib/i18n";
 type Item = { key: string; href: string; label: string };
 
 /** Tracks which nav group the reader is in, using data-nav on each section. */
-function useActiveNav(enabled: boolean) {
+function useActiveNav(enabled: boolean, page: string) {
   const [active, setActive] = useState<string>("");
   useEffect(() => {
     if (!enabled) return;
@@ -23,14 +23,26 @@ function useActiveNav(enabled: boolean) {
     );
     sections.forEach((s) => io.observe(s));
     return () => io.disconnect();
-  }, [enabled]);
-  return active;
+  }, [enabled, page]);
+  return enabled ? active : "";
 }
 
-export function SiteNav({ lang, items, menuLabel }: { lang: Locale; items: Item[]; menuLabel: string }) {
+export function SiteNav({
+  lang,
+  items: homeItems,
+  videoItems,
+  menuLabel,
+}: {
+  lang: Locale;
+  items: Item[];
+  videoItems: Item[];
+  menuLabel: string;
+}) {
   const pathname = usePathname() ?? "";
   const onHome = /^\/(en|ar)\/?$/.test(pathname);
-  const active = useActiveNav(onHome);
+  const onVideo = /^\/(en|ar)\/video\/?$/.test(pathname);
+  const items = onVideo ? videoItems : homeItems;
+  const active = useActiveNav(onHome || onVideo, pathname);
   const [open, setOpen] = useState(false);
   const id = useId();
   const button = useRef<HTMLButtonElement>(null);

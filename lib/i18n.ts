@@ -12,10 +12,18 @@ export const dir = (lang: Locale) => (lang === "ar" ? "rtl" : "ltr");
 export const ui = {
   nav: {
     work: { en: "Work", ar: "الأعمال" },
+    video: { en: "Video", ar: "الفيديو" },
     lab: { en: "Lab", ar: "المختبر" },
     story: { en: "Story", ar: "القصة" },
     services: { en: "Services", ar: "الخدمات" },
     contact: { en: "Contact", ar: "تواصل" },
+  },
+  videoNav: {
+    reel: { en: "Showreel", ar: "الشوريل" },
+    ai: { en: "AI films", ar: "أفلام AI" },
+    social: { en: "Social", ar: "سوشيال" },
+    filming: { en: "Filming", ar: "التصوير" },
+    products: { en: "AI products", ar: "منتجات AI" },
   },
   switchLang: { en: "عربي", ar: "English" },
   switchLangLabel: { en: "اقرأ الموقع بالعربية", ar: "Read this site in English" },

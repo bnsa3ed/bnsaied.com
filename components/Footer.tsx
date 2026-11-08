@@ -1,5 +1,6 @@
 import { profile } from "@/content/site";
 import { type Locale, ui } from "@/lib/i18n";
+import { KeysTip } from "./KeysTip";
 
 export function Footer({ lang }: { lang: Locale }) {
   const links = profile.links.filter((l) => l.href);
@@ -28,7 +29,7 @@ export function Footer({ lang }: { lang: Locale }) {
             ))}
           </ul>
         </nav>
-        <p className="hidden lg:block">{ui.keys[lang]}</p>
+        <KeysTip text={ui.keys[lang]} />
       </div>
     </footer>
   );

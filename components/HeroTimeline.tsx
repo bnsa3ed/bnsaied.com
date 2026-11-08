@@ -30,7 +30,7 @@ const tracks: { id: string; name: L; clips: Clip[] }[] = [
     id: "v1",
     name: { en: "Video", ar: "فيديو" },
     clips: [
-      { label: { en: "Video editing, still going", ar: "مونتاج، وما زال مستمرًا" }, short: { en: "Video editing", ar: "مونتاج" }, href: "#story", from: 0, to: 100, tone: "v1" },
+      { label: { en: "Video editing, still going", ar: "مونتاج، وما زال مستمرًا" }, short: { en: "Video editing", ar: "مونتاج" }, href: "/video", from: 0, to: 100, tone: "v1" },
     ],
   },
   {

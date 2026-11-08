@@ -5,8 +5,8 @@ import type { L } from "@/lib/i18n";
  */
 export const profile = {
   name: { en: "Mohamed Said", ar: "محمد سعيد" } as L,
-  // Temporary until a domain inbox (e.g. hello@bnsaied.com) is set up.
-  email: "bensa3ed.m@gmail.com",
+  // Forwarded to his Gmail by Cloudflare Email Routing (free).
+  email: "hello@bnsaied.com",
   // Verified 2026-11-04 against ~/social-engine (brand.json, published post links, YouTube oEmbed).
   links: [
     { label: "Instagram", href: "https://www.instagram.com/mohamedsaid.ai/" },
@@ -15,7 +15,7 @@ export const profile = {
     { label: "Threads", href: "https://www.threads.com/@mohamedsaid.ai" },
     // TODO(mohamed): not in the social engine. Add if you want them shown.
     { label: "LinkedIn", href: "" },
-    { label: "WhatsApp", href: "" },
+    { label: "WhatsApp", href: "https://wa.me/971524627678" },
   ],
   handle: "@mohamedsaid.ai",
   timeZone: "Asia/Dubai",
