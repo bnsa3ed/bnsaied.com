@@ -45,3 +45,7 @@ docs/cv/
 
 # Internal research notes (paths to other projects, internal data)
 docs/project-inventory.md
+
+# private Germany master's application files (documents, IDs) — never commit or deploy
+/germany-masters/
+perosnal/

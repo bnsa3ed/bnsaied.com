@@ -18,10 +18,11 @@ export function Header({ lang }: { lang: Locale }) {
 
   // On the video page the menu jumps between its own sections.
   const videoItems = [
-    { key: "reel", href: "#reel", label: ui.videoNav.reel[lang] },
+    { key: "channels", href: "#channels", label: ui.videoNav.channels[lang] },
+    { key: "work", href: "#work", label: ui.videoNav.work[lang] },
+    { key: "scale", href: "#scale", label: ui.videoNav.scale[lang] },
+    { key: "live", href: "#live", label: ui.videoNav.live[lang] },
     { key: "ai", href: "#ai", label: ui.videoNav.ai[lang] },
-    { key: "social", href: "#social", label: ui.videoNav.social[lang] },
-    { key: "filming", href: "#filming", label: ui.videoNav.filming[lang] },
     { key: "contact", href: "#contact", label: ui.nav.contact[lang] },
     { key: "products", href: `/${lang}`, label: ui.videoNav.products[lang] },
   ];

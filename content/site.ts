@@ -51,8 +51,8 @@ export const story: { year: string; title: L; body: L }[] = [
     year: "2019",
     title: { en: "The edit suite", ar: "غرفة المونتاج" },
     body: {
-      en: "Ads, brand films and reels. Seven years of pacing, cutting and deadlines.",
-      ar: "إعلانات وأفلام علامات تجارية وريلز. سبع سنوات من الإيقاع والقص والمواعيد.",
+      en: "Ads, brand films and reels, then camera and edit for Dalilk Academy’s channels (17M+ followers). Seven years of pacing, cutting and deadlines.",
+      ar: "إعلانات وأفلام علامات تجارية وريلز، ثم التصوير والمونتاج لقنوات أكاديمية دليلك (أكثر من 17 مليون متابع). سبع سنوات من الإيقاع والقص والمواعيد.",
     },
   },
   {

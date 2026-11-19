@@ -9,19 +9,26 @@ import { profile } from "@/content/site";
 import {
   ai,
   aiClips,
+  aiModels,
   aiUses,
+  type Channel,
+  channels,
+  channelsSection,
   type Clip,
   credits,
+  editTools,
   experience,
   facts,
   filming,
+  live,
+  scale,
   showreel,
   skills,
-  social,
   socialClips,
   stills,
   videoContact,
   videoPage,
+  work,
 } from "@/content/video";
 import { hasLocale, type Locale } from "@/lib/i18n";
 
@@ -41,6 +48,35 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/video">): 
 }
 
 const playLabel = { en: "Play", ar: "تشغيل" };
+
+/** PNG app icons show as they are; single-colour SVGs take the text colour. */
+function Logo({ src, label, size = 28 }: { src: string; label: string; size?: number }) {
+  if (src.endsWith(".svg")) {
+    return (
+      <span
+        role="img"
+        aria-label={label}
+        className="inline-block shrink-0 bg-current"
+        style={{
+          width: size,
+          height: size,
+          maskImage: `url(${src})`,
+          WebkitMaskImage: `url(${src})`,
+          maskSize: "contain",
+          WebkitMaskSize: "contain",
+          maskRepeat: "no-repeat",
+          WebkitMaskRepeat: "no-repeat",
+          maskPosition: "center",
+          WebkitMaskPosition: "center",
+        }}
+      />
+    );
+  }
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={src} alt={label} width={size} height={size} loading="lazy" className="shrink-0 rounded-[22%]" />
+  );
+}
 
 function ClipCard({
   clip,
@@ -73,6 +109,94 @@ function ClipCard({
   );
 }
 
+function PlatformStat({ href, icon, value, label }: { href: string; icon: string; value: string; label: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${label}: ${value}`}
+      className="flex min-h-11 items-center gap-2 rounded-full bg-paper px-3 text-[0.875rem] font-semibold text-ink hover:bg-line"
+    >
+      <Logo src={icon} label="" size={16} />
+      <span dir="ltr">
+        {value}
+      </span>
+    </a>
+  );
+}
+
+function ChannelCard({ c, lang }: { c: Channel; lang: Locale }) {
+  const ar = lang === "ar";
+  return (
+    <li className="flex flex-col rounded-2xl border border-line p-5">
+      <div className="flex items-center gap-3">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={c.avatar} alt="" width={56} height={56} loading="lazy" className="h-14 w-14 shrink-0 rounded-full" />
+        <div className="min-w-0">
+          <h3 className="font-semibold leading-snug text-ink">
+            <a href={c.youtube.url} target="_blank" rel="noopener noreferrer" className="hover:underline">
+              {c.name[lang]}
+            </a>
+          </h3>
+          <p className="text-[0.875rem] text-muted">{c.host[lang]}</p>
+        </div>
+      </div>
+
+      <p className="mt-5 flex flex-col">
+        <span dir="ltr" className={`text-[2.25rem] font-semibold leading-none tracking-tight ${ar ? "text-end" : ""}`}>
+          {c.youtube.subs}
+        </span>
+        <span className="mt-1 text-[0.875rem] text-muted">{ar ? "مشترك يوتيوب" : "YouTube subscribers"}</span>
+      </p>
+      <p className="mt-1.5 text-[0.875rem] text-muted">
+        {c.youtube.views && (
+          <>
+            <span dir="ltr" className="tc">
+              {c.youtube.views}
+            </span>{" "}
+            {channelsSection.views[lang]}
+            {ar ? "، " : " · "}
+          </>
+        )}
+        <span dir="ltr" className="tc">
+          {c.youtube.videos}
+        </span>{" "}
+        {channelsSection.videos[lang]}
+        {c.note && (
+          <>
+            {ar ? "، " : " · "}
+            {c.note[lang]}
+          </>
+        )}
+      </p>
+
+      <div className="mt-4 flex flex-wrap gap-2">
+        <PlatformStat href={c.youtube.url} icon="/logos/youtube.svg" value={c.youtube.subs} label="YouTube" />
+        {c.instagram && (
+          <PlatformStat href={c.instagram.url} icon="/logos/instagram.svg" value={c.instagram.followers} label="Instagram" />
+        )}
+        {c.tiktok && <PlatformStat href={c.tiktok.url} icon="/logos/tiktok.svg" value={c.tiktok.followers} label="TikTok" />}
+        {c.site && (
+          <a
+            href={c.site}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex min-h-11 items-center rounded-full px-3 text-[0.875rem] font-medium text-muted ring-1 ring-line hover:text-ink hover:ring-line-strong"
+          >
+            {channelsSection.visit[lang]}
+          </a>
+        )}
+      </div>
+
+      <p className="mt-auto border-t border-line pt-3 text-[0.875rem] text-ink [margin-block-start:1.25rem]">
+        <span className="text-muted">{ar ? "دوري: " : "My part: "}</span>
+        {c.role[lang]}
+      </p>
+    </li>
+  );
+}
+
 const ghostBtn =
   "inline-flex min-h-12 items-center rounded-full px-6 font-medium text-ink ring-1 ring-line-strong hover:ring-ink";
 const solidBtn =
@@ -88,10 +212,13 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
   const mailto = `mailto:${profile.email}?subject=${encodeURIComponent(videoContact.subject[lang])}`;
   const firstClips = socialClips.slice(0, 4);
   const moreClips = socialClips.slice(4);
+  const maxMonth = Math.max(...scale.months.map((m) => m.v));
+  const maxSplit = Math.max(...scale.split.map((s) => s.v));
+  const sep = ar ? "، " : " · ";
 
   return (
     <div className="flex flex-col gap-4 pb-24 md:gap-6 md:pb-6">
-      {/* Hero: title, then the showreel straight away, then the ways to hire */}
+      {/* Hero: the reach first, then the proof numbers, then the ways to hire */}
       <section
         id="reel"
         data-section="reel"
@@ -106,7 +233,7 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
         </p>
         <h1
           id="video-title"
-          className={`mt-3 max-w-4xl font-semibold tracking-tight text-balance text-ink md:mt-4 ${
+          className={`mt-3 max-w-5xl font-semibold tracking-tight text-balance text-ink md:mt-4 ${
             ar
               ? "text-[2rem] leading-[1.35] sm:text-[3rem] md:text-[3.5rem]"
               : "type-narrow text-[2.5rem] leading-[0.98] sm:text-[4rem] md:text-[4.75rem]"
@@ -114,111 +241,107 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
         >
           {videoPage.title[lang]}
         </h1>
+        <p className="mt-6 max-w-3xl text-[1.125rem] leading-relaxed text-muted md:mt-8 md:text-[1.25rem]">
+          {videoPage.lede[lang]}
+        </p>
 
-        <div className="mt-6 md:mt-10">
-          <VideoPlayer
-            src={showreel.src}
-            srcSmall={showreel.srcSmall}
-            poster={showreel.poster}
-            label={`${showreel.title[lang]} · ${showreel.intro[lang]}`}
-            duration={showreel.duration}
-            playLabel={playLabel[lang]}
-            errorLabel={videoContact.errorVideo[lang]}
-            ratio="16/9"
-            priority
-            bleed
-          />
-          <p className="mt-3 text-[0.875rem] text-muted">
-            <span className="font-medium text-ink">{showreel.title[lang]}</span>
-            {ar ? "، " : " · "}
-            {showreel.intro[lang]}
-          </p>
-        </div>
-
-        <div className="mt-8 grid gap-8 md:mt-12 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:gap-12">
-          <div>
-            <p className="max-w-2xl text-[1.125rem] leading-relaxed text-muted md:text-[1.25rem]">{videoPage.lede[lang]}</p>
-            <div id="hire-actions" className="mt-6 flex flex-wrap items-center gap-3">
-              <a href={videoContact.cv} download className={solidBtn}>
-                {videoPage.ctaCv[lang]}
-              </a>
-              <a href={videoContact.whatsapp} target="_blank" rel="noopener noreferrer" className={ghostBtn}>
-                WhatsApp
-              </a>
-              <a
-                href={mailto}
-                className="inline-flex min-h-12 items-center px-3 font-medium text-muted underline decoration-line-strong underline-offset-4 hover:text-ink"
-              >
-                {videoPage.ctaEmail[lang]}
-              </a>
-            </div>
-            <p className="mt-4 text-[0.9375rem] text-muted">{videoPage.availability[lang]}</p>
-          </div>
-        </div>
-
-        {/* Clients: one line on phones, a grid from sm up */}
-        <div className="mt-10 border-t border-line pt-6 md:mt-14">
-          <h2 className="text-[0.9375rem] font-medium text-muted">{showreel.creditsTitle[lang]}</h2>
-          <p className="mt-2 text-[1rem] leading-relaxed font-medium text-ink sm:hidden">
-            {credits.map((c) => c.name[lang]).join(" · ")}
-          </p>
-          <ul className="mt-4 hidden gap-x-8 gap-y-5 sm:grid sm:grid-cols-2 lg:grid-cols-4">
-            {credits.map((c) => (
-              <li key={c.name.en} className="border-t border-line pt-3">
-                <p className="font-semibold leading-snug text-ink">{c.name[lang]}</p>
-                <p className="mt-0.5 text-[0.875rem] text-muted">{c.what[lang]}</p>
-              </li>
+        {/* Channel avatars as a quick visual credit line */}
+        <a href="#channels" className="group mt-6 inline-flex items-center gap-3">
+          <span className="flex -space-x-3 rtl:space-x-reverse">
+            {channels.map((c) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={c.id}
+                src={c.avatar}
+                alt=""
+                width={40}
+                height={40}
+                className="h-10 w-10 rounded-full ring-2 ring-paper"
+              />
             ))}
-          </ul>
-        </div>
+          </span>
+          <span className="text-[0.9375rem] font-medium text-ink underline decoration-line-strong underline-offset-4 group-hover:decoration-ink">
+            {ar ? "8 قنوات، شاهدها بنفسك" : "8 channels, see them yourself"}
+          </span>
+        </a>
 
-        <dl className="mt-10 grid max-w-3xl grid-cols-3 gap-6 border-t border-line pt-6">
+        <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8 md:mt-12 md:grid-cols-4">
           {facts.map((f) => (
             <div key={f.value} className="flex flex-col">
-              <dt className="order-last mt-2 text-[0.8125rem] leading-snug text-muted sm:text-[0.9375rem]">{f.label[lang]}</dt>
+              <dt className="order-last mt-2 text-[0.875rem] leading-snug text-muted sm:text-[0.9375rem]">{f.label[lang]}</dt>
               <dd
                 dir="ltr"
-                className={`text-[1.5rem] font-semibold leading-none tracking-tight sm:text-[2rem] ${ar ? "text-end" : ""}`}
+                className={`text-[2.25rem] font-semibold leading-none tracking-tight sm:text-[3rem] ${ar ? "text-end" : ""}`}
               >
                 {f.value}
               </dd>
             </div>
           ))}
         </dl>
+
+        <div id="hire-actions" className="mt-10 flex flex-wrap items-center gap-3">
+          <a href={videoContact.cv} download className={solidBtn}>
+            {videoPage.ctaCv[lang]}
+          </a>
+          <a href={videoContact.whatsapp} target="_blank" rel="noopener noreferrer" className={ghostBtn}>
+            WhatsApp
+          </a>
+          <a
+            href={mailto}
+            className="inline-flex min-h-12 items-center px-3 font-medium text-muted underline decoration-line-strong underline-offset-4 hover:text-ink"
+          >
+            {videoPage.ctaEmail[lang]}
+          </a>
+        </div>
+        <p className="mt-4 text-[0.9375rem] text-muted">{videoPage.availability[lang]}</p>
       </section>
 
-      {/* Generative AI: the differentiator, right after the reel */}
-      <Panel id="ai" nav="ai" tone="dark">
-        <SectionHead id="ai" title={ai.title[lang]} intro={ai.intro[lang]} tone="dark" />
-        <ul className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 md:gap-x-6">
-          {aiClips.map((c) => (
-            <ClipCard key={c.id} clip={c} lang={lang} tone="dark" />
+      {/* The channels: the validation, each card links to the real thing */}
+      <Panel id="channels" nav="channels">
+        <SectionHead id="channels" title={channelsSection.title[lang]} intro={channelsSection.intro[lang]} />
+        <dl className="mb-10 grid grid-cols-2 gap-4 md:grid-cols-4">
+          {channelsSection.totals.map((t) => (
+            <div key={t.value} className="flex flex-col rounded-2xl bg-paper p-5">
+              <dt className="order-last mt-1 text-[0.875rem] text-muted">{t.label[lang]}</dt>
+              <dd dir="ltr" className={`text-[1.75rem] font-semibold leading-none tracking-tight ${ar ? "text-end" : ""}`}>
+                {t.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {channels.map((c) => (
+            <ChannelCard key={c.id} c={c} lang={lang} />
           ))}
         </ul>
-        <div className="mt-14 border-t border-white/15 pt-8 md:mt-16">
-          <h3 className="text-[1.25rem] font-semibold">{ai.toolsTitle[lang]}</h3>
-          <ul className="mt-6 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
-            {aiUses.map((u) => (
-              <li key={u.tool} className="flex flex-col">
-                <span dir="ltr" className={`font-semibold text-panel ${ar ? "text-end" : ""}`}>
-                  {u.tool}
-                </span>
-                <span className="mt-0.5 text-[0.9375rem] text-[#c9cdd5]">{u.use[lang]}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <p className="mt-6 max-w-3xl text-[0.875rem] text-muted">{channelsSection.asOf[lang]}</p>
       </Panel>
 
-      {/* Social and short-form: four on phones, the rest one tap away */}
-      <Panel id="social" nav="social">
+      {/* Showreel and social: the craft, as proof of the volume */}
+      <Panel id="work" nav="work">
         <SectionHead
-          id="social"
-          title={social.title[lang]}
-          intro={social.intro[lang]}
-          aside={ar ? `${socialClips.length} فيديوهات` : `${socialClips.length} videos`}
+          id="work"
+          title={work.title[lang]}
+          intro={work.intro[lang]}
+          aside={ar ? `${socialClips.length + 1} فيديوهات` : `${socialClips.length + 1} videos`}
         />
-        <ul className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 md:gap-x-6">
+        <VideoPlayer
+          src={showreel.src}
+          srcSmall={showreel.srcSmall}
+          poster={showreel.poster}
+          label={`${showreel.title[lang]} · ${showreel.intro[lang]}`}
+          duration={showreel.duration}
+          playLabel={playLabel[lang]}
+          errorLabel={videoContact.errorVideo[lang]}
+          ratio="16/9"
+        />
+        <p className="mt-3 text-[0.875rem] text-muted">
+          <span className="font-medium text-ink">{showreel.title[lang]}</span>
+          {sep}
+          {showreel.intro[lang]}
+        </p>
+
+        <ul className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 md:mt-14 md:gap-x-6">
           {firstClips.map((c) => (
             <ClipCard key={c.id} clip={c} lang={lang} />
           ))}
@@ -238,28 +361,220 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
             </ul>
           </details>
         )}
+
+        <div className="mt-12 border-t border-line pt-6 md:mt-14">
+          <h3 className="text-[0.9375rem] font-medium text-muted">{work.otherClients[lang]}</h3>
+          <p className="mt-2 text-[1rem] leading-relaxed font-medium text-ink">
+            {credits
+              .filter((c) => c.name.en !== "Dalilk Academy")
+              .map((c) => c.name[lang])
+              .join(" · ")}
+          </p>
+        </div>
       </Panel>
 
-      {/* Filming: events and podcasts */}
-      <Panel id="filming" nav="filming">
-        <SectionHead id="filming" title={filming.title[lang]} intro={filming.intro[lang]} />
-        <VideoPlayer
-          src={filming.reel.src}
-          poster={filming.reel.poster}
-          label={filming.reel.title[lang]}
-          duration={filming.reel.duration}
-          playLabel={playLabel[lang]}
-          errorLabel={videoContact.errorVideo[lang]}
-          ratio="16/9"
-        />
-        <p className="mt-3 text-[0.875rem] text-muted">
-          <span className="font-medium text-ink">{filming.reel.title[lang]}</span>
-          {ar ? "، " : " · "}
-          {filming.reel.kind[lang]}
-          {ar ? "، " : " · "}
-          {filming.reel.role[lang]}
-        </p>
-        <ul className="mt-10 grid grid-cols-2 gap-3 md:mt-12 md:grid-cols-3 md:gap-4">
+      {/* Volume: numbers straight from the task sheet */}
+      <Panel id="scale" nav="scale">
+        <SectionHead id="scale" title={scale.title[lang]} intro={scale.intro[lang]} />
+        <dl className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4">
+          {scale.stats.map((s) => (
+            <div key={s.value} className="flex flex-col border-t-2 border-ink pt-4">
+              <dt className="order-last mt-2 text-[0.875rem] leading-snug text-muted sm:text-[0.9375rem]">{s.label[lang]}</dt>
+              <dd dir="ltr" className={`text-[2rem] font-semibold leading-none tracking-tight sm:text-[2.5rem] ${ar ? "text-end" : ""}`}>
+                {s.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        <div className="mt-14 grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-14">
+          <figure>
+            <figcaption className="text-[1.125rem] font-semibold">{scale.chartTitle[lang]}</figcaption>
+            <ol
+              className="mt-6 flex h-56 items-end gap-1.5 border-b border-line sm:gap-3"
+              aria-label={scale.chartTitle[lang]}
+            >
+              {scale.months.map((m, i) => {
+                const last = i === scale.months.length - 1;
+                return (
+                  <li key={m.m.en} className="flex h-full flex-1 flex-col items-center justify-end">
+                    <span dir="ltr" className="tc mb-1 text-[0.75rem] font-semibold text-ink sm:text-[0.8125rem]">
+                      {m.v}
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className={`w-full rounded-t-[4px] ${last ? "bg-rec/45" : "bg-rec"}`}
+                      style={{ height: `${(m.v / maxMonth) * 82}%` }}
+                    />
+                    <span className="sr-only">{m.m[lang]}</span>
+                  </li>
+                );
+              })}
+            </ol>
+            <div aria-hidden="true" className="mt-2 flex gap-1.5 sm:gap-3">
+              {scale.months.map((m) => (
+                <span key={m.m.en} className="flex-1 text-center text-[0.6875rem] text-muted sm:text-[0.75rem]">
+                  {m.m[lang]}
+                </span>
+              ))}
+            </div>
+            <p className="mt-3 text-[0.8125rem] text-muted">{scale.chartNote[lang]}</p>
+          </figure>
+
+          <div>
+            <h3 className="text-[1.125rem] font-semibold">{scale.splitTitle[lang]}</h3>
+            <ul className="mt-6 flex flex-col gap-3">
+              {scale.split.map((s) => (
+                <li key={s.name.en}>
+                  <div className="flex items-baseline justify-between gap-4 text-[0.9375rem]">
+                    <span className="text-ink">{s.name[lang]}</span>
+                    <span dir="ltr" className="tc font-semibold">
+                      {s.v}
+                    </span>
+                  </div>
+                  <div className="mt-1 h-2 rounded-full bg-paper">
+                    <div className="h-2 rounded-full bg-ink" style={{ width: `${(s.v / maxSplit) * 100}%` }} />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <h3 className="mt-16 text-[1.25rem] font-semibold">{scale.howTitle[lang]}</h3>
+        <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {scale.how.map((h) => (
+            <li key={h.title.en} className="rounded-2xl bg-paper p-6">
+              <h4 className="font-semibold leading-snug">{h.title[lang]}</h4>
+              <p className="mt-2 text-[0.9375rem] text-muted">{h.body[lang]}</p>
+            </li>
+          ))}
+        </ul>
+      </Panel>
+
+      {/* Live seminars and events */}
+      <Panel id="live" nav="live">
+        <SectionHead id="live" title={live.title[lang]} intro={live.intro[lang]} aside={live.places[lang]} />
+
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:items-start lg:gap-12">
+          <figure>
+            <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-paper">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={live.team.src}
+                alt={live.team.alt[lang]}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            </div>
+            <figcaption className="mt-2 text-[0.875rem] leading-snug text-muted">
+              <span className="font-medium text-ink">{ar ? "الرياض" : "Riyadh"}</span>
+              {sep}
+              {live.team.caption[lang]}
+            </figcaption>
+          </figure>
+
+          <div>
+            <h3 className="text-[1.25rem] font-semibold">{live.rigTitle[lang]}</h3>
+            <ol className="mt-6 flex flex-col">
+              {live.rig.map((r, i) => (
+                <li key={r.step.en} className="relative flex gap-4 pb-6 last:pb-0">
+                  {i < live.rig.length - 1 && (
+                    <span aria-hidden="true" className="absolute top-11 bottom-1 w-px bg-line start-[21px]" />
+                  )}
+                  <span
+                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
+                      i === 2 ? "bg-rec text-white" : "bg-paper text-ink"
+                    }`}
+                  >
+                    {r.logo ? (
+                      <Logo src={r.logo} label="" size={20} />
+                    ) : (
+                      <span dir="ltr" className="tc text-[0.875rem] font-semibold">
+                        {i + 1}
+                      </span>
+                    )}
+                  </span>
+                  <div className="pt-1.5">
+                    <p dir={i === 2 || i === 3 ? "ltr" : undefined} className={`font-semibold ${ar && (i === 2 || i === 3) ? "text-end" : ""}`}>
+                      {r.step[lang]}
+                    </p>
+                    <p className="text-[0.9375rem] text-muted">{r.detail[lang]}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            <div className="mt-10 border-t border-line pt-8">
+              <VideoPlayer
+                src={filming.reel.src}
+                poster={filming.reel.poster}
+                label={filming.reel.title[lang]}
+                duration={filming.reel.duration}
+                playLabel={playLabel[lang]}
+                errorLabel={videoContact.errorVideo[lang]}
+                ratio="16/9"
+              />
+              <p className="mt-3 text-[0.875rem] text-muted">
+                <span className="font-medium text-ink">{filming.reel.title[lang]}</span>
+                {sep}
+                {filming.reel.kind[lang]}
+                {sep}
+                {filming.reel.role[lang]}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-14 border-t border-line pt-10 md:mt-16">
+          <h3 className="text-[1.25rem] font-semibold">{live.btsTitle[lang]}</h3>
+          <p className="mt-2 max-w-2xl text-[1rem] text-muted">{live.btsIntro[lang]}</p>
+          <div className="mt-6 grid gap-3 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-4">
+            <div>
+              <VideoPlayer
+                src={live.btsClip.src}
+                poster={live.btsClip.poster}
+                label={live.btsClip.title[lang]}
+                duration={live.btsClip.duration}
+                playLabel={playLabel[lang]}
+                errorLabel={videoContact.errorVideo[lang]}
+                ratio="16/9"
+              />
+              <p className="mt-2 text-[0.875rem] text-muted">
+                <span className="font-medium text-ink">{live.btsClip.title[lang]}</span>
+                {sep}
+                {live.btsClip.kind[lang]}
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-3 md:gap-4">
+              {live.btsPhotos.slice(3).map((p) => (
+                <figure key={p.src}>
+                  <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-paper">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p.src} alt={p.alt[lang]} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+                  </div>
+                  <figcaption className="mt-2 text-[0.8125rem] leading-snug text-muted">{p.caption[lang]}</figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+          <ul className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+            {live.btsPhotos.slice(0, 3).map((p, i) => (
+              <li key={p.src} className={i === 2 ? "col-span-2 md:col-span-1" : ""}>
+                <figure>
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-paper">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p.src} alt={p.alt[lang]} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+                  </div>
+                  <figcaption className="mt-2 text-[0.8125rem] leading-snug text-muted">{p.caption[lang]}</figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <h3 className="mt-14 text-[1.25rem] font-semibold md:mt-16">{ar ? "على الطريق" : "On the road"}</h3>
+        <ul className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
           {stills.map((s) => (
             <li key={s.src}>
               <figure>
@@ -269,11 +584,87 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
                 </div>
                 <figcaption className="mt-2 text-[0.8125rem] leading-snug text-muted sm:text-[0.875rem]">
                   <span className="font-medium text-ink">{s.place[lang]}</span>
-                  {ar ? "، " : " · "}
+                  {sep}
                   {s.caption[lang]}
                 </figcaption>
               </figure>
             </li>
+          ))}
+        </ul>
+      </Panel>
+
+      {/* Generative AI */}
+      <Panel id="ai" nav="ai" tone="dark">
+        <SectionHead id="ai" title={ai.title[lang]} intro={ai.intro[lang]} tone="dark" />
+
+        <ul className="mb-14 grid gap-4 md:grid-cols-3">
+          {ai.routes.map((r) => (
+            <li key={r.title.en} className="rounded-2xl bg-white/[0.06] p-6 ring-1 ring-white/10">
+              <h3 className="font-semibold">{r.title[lang]}</h3>
+              <p className="mt-2 text-[0.9375rem] text-[#c9cdd5]">{r.body[lang]}</p>
+            </li>
+          ))}
+        </ul>
+
+        <h3 className="text-[1.25rem] font-semibold">{ai.toolsTitle[lang]}</h3>
+        <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {aiUses.map((u) => (
+            <li key={u.tool} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4 ring-1 ring-white/10">
+              {u.logo ? (
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-white/10 text-panel">
+                  <Logo src={u.logo} label="" size={u.logo.endsWith(".svg") ? 22 : 40} />
+                </span>
+              ) : (
+                <span
+                  aria-hidden="true"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-white/10 font-mono text-[0.875rem] text-panel"
+                >
+                  {"</>"}
+                </span>
+              )}
+              <div className="min-w-0">
+                <p dir="ltr" className={`font-semibold text-panel ${ar ? "text-end" : ""}`}>
+                  {u.tool}
+                </p>
+                <p className="mt-0.5 text-[0.875rem] leading-snug text-[#c9cdd5]">{u.use[lang]}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <h3 className="mt-14 text-[1.25rem] font-semibold">{ai.modelsTitle[lang]}</h3>
+        <p className="mt-1 text-[0.9375rem] text-[#c9cdd5]">{ai.modelsNote[lang]}</p>
+        <div className="mt-6 flex flex-col gap-5">
+          {aiModels.map((g) => (
+            <div key={g.group.en} className="grid gap-3 md:grid-cols-[9rem_1fr] md:items-start">
+              <p className="pt-2 text-[0.875rem] font-medium text-[#9ea4ae]">{g.group[lang]}</p>
+              <ul className="flex flex-wrap gap-2">
+                {g.items.map((m) => (
+                  <li
+                    key={m.name}
+                    dir="ltr"
+                    className="flex min-h-10 items-center gap-2 rounded-full bg-white/[0.08] py-1.5 ps-1.5 pe-4 text-[0.9375rem] font-medium text-panel ring-1 ring-white/10"
+                  >
+                    <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-white/10">
+                      {m.logo ? (
+                        <Logo src={m.logo} label="" size={m.logo.endsWith(".svg") ? 16 : 28} />
+                      ) : (
+                        <span aria-hidden="true" className="text-[0.75rem] font-semibold">
+                          {m.name[0]}
+                        </span>
+                      )}
+                    </span>
+                    {m.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <ul className="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 border-t border-white/15 pt-10 sm:grid-cols-3 md:gap-x-6">
+          {aiClips.map((c) => (
+            <ClipCard key={c.id} clip={c} lang={lang} tone="dark" />
           ))}
         </ul>
       </Panel>
@@ -289,6 +680,16 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
             </li>
           ))}
         </ul>
+        <ul className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-[0.9375rem] font-medium text-ink">
+          {[...editTools, { tool: "DJI Ronin", logo: "/logos/dji.svg" }, { tool: "Stream Deck", logo: "/logos/elgato.svg" }, { tool: "Zoom", logo: "/logos/zoom.svg" }].map((t) => (
+            <li key={t.tool} className="flex items-center gap-2">
+              <Logo src={t.logo} label="" size={20} />
+              <span dir="ltr">{t.tool}</span>
+            </li>
+          ))}
+          <li dir="ltr">RØDECaster Video</li>
+        </ul>
+
         <h3 className="mt-14 text-[1.25rem] font-semibold md:mt-16">{ar ? "الخبرة" : "Experience"}</h3>
         <ol className="mt-4">
           {experience.map((e) => {
@@ -296,7 +697,7 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
             return (
               <li
                 key={e.role.en + e.dates}
-                className="grid grid-cols-[1fr_auto] items-baseline gap-x-6 border-t border-line py-4 sm:grid-cols-[14rem_1fr_auto]"
+                className="grid grid-cols-[1fr_auto] items-baseline gap-x-6 border-t border-line py-4 sm:grid-cols-[16rem_1fr_auto]"
               >
                 <span className="font-semibold text-ink">{e.role[lang]}</span>
                 <span className="order-last col-span-2 text-[0.9375rem] text-muted sm:order-none sm:col-span-1">{e.org[lang]}</span>

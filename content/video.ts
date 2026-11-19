@@ -18,16 +18,16 @@ export type Clip = {
 };
 
 export const videoPage = {
-  metaTitle: { en: "Video editor & generative AI video editor", ar: "مونتير ومحرر فيديو بالذكاء الاصطناعي" } as L,
+  metaTitle: { en: "Video producer for big YouTube channels", ar: "منتج فيديو لقنوات يوتيوب كبيرة" } as L,
   metaDescription: {
-    en: "Showreel and selected work: short films, ads, events, interviews, social media and fully AI-generated films. 7+ years of editing and filming.",
-    ar: "الشوريل وأعمال مختارة: أفلام قصيرة وإعلانات وفعاليات ومقابلات وسوشيال ميديا وأفلام مولّدة بالكامل بالذكاء الاصطناعي. أكثر من 7 سنوات في المونتاج والتصوير.",
+    en: "Camera operator and editor behind Dalilk Academy’s channels: 17M+ followers, 377M YouTube views, 7 finished pieces a day, live seminars for 30K+. Generative AI with Higgsfield, Magnific and ComfyUI.",
+    ar: "المصوّر والمونتير خلف قنوات أكاديمية دليلك: أكثر من 17 مليون متابع و377 مليون مشاهدة على يوتيوب، و7 مواد جاهزة يوميًا، وندوات مباشرة لأكثر من 30 ألف. ذكاء اصطناعي توليدي مع Higgsfield وMagnific وComfyUI.",
   } as L,
-  eyebrow: { en: "Video portfolio", ar: "معرض أعمال الفيديو" } as L,
-  title: { en: "Senior video editor and generative AI video editor.", ar: "مونتير أول ومحرر فيديو بالذكاء الاصطناعي." } as L,
+  eyebrow: { en: "Video producer · YouTube and social at scale", ar: "منتج فيديو · يوتيوب وسوشيال على نطاق واسع" } as L,
+  title: { en: "The camera and the edit behind 17M+ followers.", ar: "خلف الكاميرا والمونتاج لقنوات يتابعها أكثر من 17 مليون." } as L,
   lede: {
-    en: "Seven years of editing and filming short films, ads, events, interviews and social content. I also make films with AI from start to finish, and use it to edit faster.",
-    ar: "سبع سنوات من المونتاج والتصوير لأفلام قصيرة وإعلانات وفعاليات ومقابلات ومحتوى سوشيال. وأصنع أيضًا أفلامًا بالذكاء الاصطناعي من البداية للنهاية، وأستخدمه لأُنجز المونتاج أسرع.",
+    en: "I film and edit for Abdulrahman Hijazy’s Dalilk channels and his brothers’ brands, Qudrat Shortcuts and Mawhiba Future, all part of AmbitionHG. Daily uploads across YouTube, Instagram and TikTok, live seminars for 30,000+ people, and events in Saudi Arabia, Bahrain and the UAE.",
+    ar: "أصوّر وأعمل المونتاج لقنوات دليلك مع عبدالرحمن حجازي، ولعلامات إخوته: اختصارات القدرات وموهبة فيوتشر، وكلها ضمن مجموعة AmbitionHG. نشر يومي على يوتيوب وإنستغرام وتيك توك، وندوات مباشرة لأكثر من 30 ألف شخص، وفعاليات في السعودية والبحرين والإمارات.",
   } as L,
   ctaReel: { en: "Watch the showreel", ar: "شاهد الشوريل" } as L,
   ctaCv: { en: "Download CV (PDF)", ar: "حمّل السيرة الذاتية (PDF)" } as L,
@@ -38,11 +38,255 @@ export const videoPage = {
   } as L,
 };
 
+/** Public counts collected 19 Nov 2026; the per-month figure comes from my own task sheet. */
 export const facts: { value: string; label: L }[] = [
-  { value: "7+", label: { en: "years editing and filming", ar: "سنوات في المونتاج والتصوير" } },
-  { value: "50", label: { en: "pieces of content a week at Dalilk Academy", ar: "مادة أسبوعيًا في أكاديمية دليلك" } },
-  { value: "30K+", label: { en: "attendees at live streams I produce", ar: "حاضر في البث المباشر الذي أنتجه" } },
+  { value: "17M+", label: { en: "followers across the channels I shoot and edit for", ar: "متابع للقنوات التي أصوّر لها وأعمل مونتاجها" } },
+  { value: "377M", label: { en: "views on those YouTube channels", ar: "مشاهدة على قنوات اليوتيوب هذه" } },
+  { value: "7", label: { en: "finished pieces a day, my normal pace", ar: "مواد جاهزة يوميًا، معدّلي المعتاد" } },
+  { value: "30K+", label: { en: "people at the live seminars I run", ar: "شخص في الندوات المباشرة التي أديرها" } },
 ];
+
+export type Channel = {
+  id: string;
+  name: L;
+  host: L;
+  avatar: string;
+  /** What I do for it. */
+  role: L;
+  youtube: { url: string; subs: string; views?: string; videos: string };
+  instagram?: { url: string; followers: string };
+  tiktok?: { url: string; followers: string };
+  site?: string;
+  note?: L;
+};
+
+export const channelsSection = {
+  title: { en: "The channels", ar: "القنوات" } as L,
+  intro: {
+    en: "Eight channels, one office, one team. Each card links to the real channel, so you can see the output for yourself.",
+    ar: "ثماني قنوات، مكتب واحد، فريق واحد. كل بطاقة تفتح القناة الحقيقية، لترى الشغل بنفسك.",
+  } as L,
+  asOf: {
+    en: "Public follower counts, 19 Nov 2026. These channels are a team effort: I film and edit with two more editor-camera operators and a designer.",
+    ar: "أرقام المتابعين العامة بتاريخ 19 نوفمبر 2026. هذه القنوات عمل فريق: أصوّر وأعمل المونتاج مع مونتير ومصوّر آخرَين ومصمم.",
+  } as L,
+  totals: [
+    { value: "5.5M", label: { en: "YouTube subscribers", ar: "مشترك يوتيوب" } as L },
+    { value: "6.8M", label: { en: "Instagram followers", ar: "متابع إنستغرام" } as L },
+    { value: "5.1M", label: { en: "TikTok followers", ar: "متابع تيك توك" } as L },
+    { value: "9,600+", label: { en: "YouTube videos published", ar: "فيديو منشور على يوتيوب" } as L },
+  ],
+  subs: { en: "subscribers", ar: "مشترك" } as L,
+  views: { en: "views", ar: "مشاهدة" } as L,
+  videos: { en: "videos", ar: "فيديو" } as L,
+  visit: { en: "Website", ar: "الموقع" } as L,
+};
+
+export const channels: Channel[] = [
+  {
+    id: "dalilk-english",
+    name: { en: "Dalilk English", ar: "دليلك للانجليزي" },
+    host: { en: "Abdulrahman Hijazy", ar: "عبدالرحمن حجازي" },
+    avatar: "/brands/dalilk-english.jpg",
+    role: { en: "Film, edit, reels, ads", ar: "تصوير ومونتاج وريلز وإعلانات" },
+    youtube: { url: "https://www.youtube.com/@dalilk4english", subs: "3.11M", views: "231M", videos: "2,258" },
+    instagram: { url: "https://www.instagram.com/dalilk4english/", followers: "4M" },
+    tiktok: { url: "https://www.tiktok.com/@dalilk4english", followers: "3.1M" },
+    site: "https://dalilk.com",
+  },
+  {
+    id: "dalilk-ielts",
+    name: { en: "Dalilk IELTS", ar: "دليلك للايلتس" },
+    host: { en: "Abdulrahman Hijazy", ar: "عبدالرحمن حجازي" },
+    avatar: "/brands/dalilk-ielts.jpg",
+    role: { en: "Film, edit, workshops, ads", ar: "تصوير ومونتاج وورش وإعلانات" },
+    youtube: { url: "https://www.youtube.com/@dalilk4ielts", subs: "1.51M", views: "82M", videos: "2,885" },
+    instagram: { url: "https://www.instagram.com/dalilkme/", followers: "2M" },
+    tiktok: { url: "https://www.tiktok.com/@dalilk4ielts", followers: "1.2M" },
+  },
+  {
+    id: "qudrat",
+    name: { en: "Qudrat Shortcuts", ar: "اختصارات القدرات" },
+    host: { en: "Ahmed Hijazy", ar: "أحمد حجازي" },
+    avatar: "/brands/qudrat.jpg",
+    role: { en: "Film, events, Al-Tumooh Forum", ar: "تصوير وفعاليات وملتقى الطموح" },
+    youtube: { url: "https://www.youtube.com/@QudratShortcuts", subs: "336K", views: "34M", videos: "1,526" },
+    instagram: { url: "https://www.instagram.com/qudratshortcuts/", followers: "246K" },
+    tiktok: { url: "https://www.tiktok.com/@qudratshortcuts", followers: "338K" },
+    site: "https://qudurat.com",
+  },
+  {
+    id: "dalilk-step",
+    name: { en: "Dalilk STEP", ar: "دليلك للستيب" },
+    host: { en: "Abdulrahman Hijazy", ar: "عبدالرحمن حجازي" },
+    avatar: "/brands/dalilk-step.jpg",
+    role: { en: "Edit, workshops, reels", ar: "مونتاج وورش وريلز" },
+    youtube: { url: "https://www.youtube.com/@dalilk4step", subs: "239K", views: "22M", videos: "1,701" },
+    instagram: { url: "https://www.instagram.com/dalilk4step/", followers: "405K" },
+    tiktok: { url: "https://www.tiktok.com/@dalilk4step", followers: "389K" },
+  },
+  {
+    id: "dalilk-podcast",
+    name: { en: "Dalilk English Podcast", ar: "بودكاست دليلك للانجليزي" },
+    host: { en: "Abdulrahman Hijazy", ar: "عبدالرحمن حجازي" },
+    avatar: "/brands/dalilk-podcast.jpg",
+    role: { en: "Multi-camera podcast shoots and edit", ar: "تصوير بودكاست بعدة كاميرات ومونتاج" },
+    youtube: { url: "https://www.youtube.com/@dalilk4english_podcast", subs: "171K", views: "2.5M", videos: "54" },
+  },
+  {
+    id: "dalilk-career",
+    name: { en: "Dalilk Career", ar: "دليلك المهني" },
+    host: { en: "Abdulrahman Hijazy", ar: "عبدالرحمن حجازي" },
+    avatar: "/brands/dalilk-career.jpg",
+    role: { en: "Edit, reels", ar: "مونتاج وريلز" },
+    youtube: { url: "https://www.youtube.com/@Dalilk4career", subs: "106K", views: "3.9M", videos: "706" },
+    instagram: { url: "https://www.instagram.com/dalilk4career/", followers: "163K" },
+    tiktok: { url: "https://www.tiktok.com/@dalilk4career", followers: "42K" },
+  },
+  {
+    id: "dalilk-toefl",
+    name: { en: "Dalilk TOEFL", ar: "دليلك للتوفل" },
+    host: { en: "Abdulrahman Hijazy", ar: "عبدالرحمن حجازي" },
+    avatar: "/brands/dalilk-toefl.jpg",
+    role: { en: "Launch content, edit", ar: "محتوى الإطلاق ومونتاج" },
+    youtube: { url: "https://www.youtube.com/@dalilk4toefl", subs: "10.9K", views: "1.3M", videos: "132" },
+    instagram: { url: "https://www.instagram.com/dalilk4toefl/", followers: "21K" },
+    tiktok: { url: "https://www.tiktok.com/@dalilk4toefl", followers: "4.4K" },
+    note: { en: "Launched Jan 2026", ar: "انطلقت يناير 2026" },
+  },
+  {
+    id: "mawhiba",
+    name: { en: "Mawhiba Future", ar: "موهبة فيوتشر" },
+    host: { en: "Anas Hijazy", ar: "أنس حجازي" },
+    avatar: "/brands/mawhiba.jpg",
+    role: { en: "Kids’ course ads and reels", ar: "إعلانات وريلز لدورات الأطفال" },
+    youtube: { url: "https://www.youtube.com/@mawhiba.future", subs: "940", videos: "410" },
+    site: "https://mawhibafuture.com",
+    note: { en: "New brand, launched Nov 2024", ar: "علامة جديدة، انطلقت نوفمبر 2024" },
+  },
+];
+
+/** From my task sheet ("new Tasks" + "2025" tabs), pulled 19 Nov 2026. */
+export const scale = {
+  title: { en: "Built for volume", ar: "مصمم للكمية والسرعة" } as L,
+  intro: {
+    en: "Big channels don’t need one perfect video. They need good videos every day, on time. Every task I do goes into a shared sheet, and these numbers come straight from it.",
+    ar: "القنوات الكبيرة لا تحتاج فيديو واحدًا مثاليًا، بل فيديوهات جيدة كل يوم وفي موعدها. كل مهمة أعملها تُسجَّل في شيت مشترك، وهذه الأرقام منه مباشرة.",
+  } as L,
+  stats: [
+    { value: "1,250+", label: { en: "tasks logged since April 2025", ar: "مهمة مسجّلة منذ أبريل 2025" } as L },
+    { value: "1,000+", label: { en: "of them brand-new videos, not revisions", ar: "منها فيديوهات جديدة، لا تعديلات" } as L },
+    { value: "125", label: { en: "logged in my busiest month (Sep 2026)", ar: "مهمة مسجّلة في أكثر شهر ضغطًا (سبتمبر 2026)" } as L },
+    { value: "5", label: { en: "brands in my queue at the same time", ar: "علامات في قائمة مهامي في نفس الوقت" } as L },
+  ],
+  chartTitle: { en: "Tasks logged per month, 2026", ar: "المهام المسجّلة شهريًا، 2026" } as L,
+  chartNote: { en: "November is to date.", ar: "نوفمبر حتى اليوم." } as L,
+  months: [
+    { m: { en: "Jan", ar: "ينا" }, v: 35 },
+    { m: { en: "Feb", ar: "فبر" }, v: 34 },
+    { m: { en: "Mar", ar: "مار" }, v: 32 },
+    { m: { en: "Apr", ar: "أبر" }, v: 48 },
+    { m: { en: "May", ar: "ماي" }, v: 71 },
+    { m: { en: "Jun", ar: "يون" }, v: 88 },
+    { m: { en: "Jul", ar: "يول" }, v: 97 },
+    { m: { en: "Aug", ar: "أغس" }, v: 83 },
+    { m: { en: "Sep", ar: "سبت" }, v: 125 },
+    { m: { en: "Oct", ar: "أكت" }, v: 113 },
+    { m: { en: "Nov", ar: "نوف" }, v: 94 },
+  ] as { m: L; v: number }[],
+  splitTitle: { en: "2026 tasks by brand", ar: "مهام 2026 حسب العلامة" } as L,
+  split: [
+    { name: { en: "Dalilk IELTS", ar: "دليلك للايلتس" } as L, v: 284 },
+    { name: { en: "Dalilk English", ar: "دليلك للانجليزي" } as L, v: 226 },
+    { name: { en: "Dalilk STEP", ar: "دليلك للستيب" } as L, v: 120 },
+    { name: { en: "All brands (shared campaigns)", ar: "كل العلامات (حملات مشتركة)" } as L, v: 74 },
+    { name: { en: "Al-Tumooh Forum", ar: "ملتقى الطموح" } as L, v: 56 },
+    { name: { en: "Dalilk TOEFL", ar: "دليلك للتوفل" } as L, v: 40 },
+  ],
+  howTitle: { en: "How the work keeps moving", ar: "كيف يستمر الشغل بدون توقف" } as L,
+  how: [
+    {
+      title: { en: "A small team, a clear queue", ar: "فريق صغير وقائمة واضحة" } as L,
+      body: {
+        en: "Two editor-camera operators and a designer. I manage the shoots, the edit queue and delivery, so nothing waits on one person.",
+        ar: "مونتيران ومصوّران ومصمم. أدير التصوير وقائمة المونتاج والتسليم، فلا يتوقف شيء على شخص واحد.",
+      } as L,
+    },
+    {
+      title: { en: "Brief to publish, tracked", ar: "من البريف للنشر، كله متتبَّع" } as L,
+      body: {
+        en: "Every video has a row: brief, start, delivery, Drive link and each revision round. Anyone can see where a piece is.",
+        ar: "كل فيديو له صف: البريف والبداية والتسليم ورابط الدرايف وكل جولة تعديل. أي شخص يعرف وين وصل الفيديو.",
+      } as L,
+    },
+    {
+      title: { en: "Templates and automation", ar: "قوالب وأتمتة" } as L,
+      body: {
+        en: "Project templates, Motion Graphics templates, automated render delivery and a searchable library of 6,778 B-roll clips.",
+        ar: "قوالب مشاريع وقوالب موشن جرافيك وتسليم رندر تلقائي ومكتبة بحث لـ 6,778 لقطة بي رول.",
+      } as L,
+    },
+    {
+      title: { en: "AI where it saves hours", ar: "الذكاء الاصطناعي حيث يوفّر ساعات" } as L,
+      body: {
+        en: "Generated B-roll, upscaling, voice fixes and clean-up run in parallel while I edit.",
+        ar: "بي رول مولّد وتكبير دقة وإصلاح صوت وتنظيف لقطات، تعمل بالتوازي أثناء المونتاج.",
+      } as L,
+    },
+  ],
+};
+
+export const live = {
+  title: { en: "Live seminars and events", ar: "الندوات المباشرة والفعاليات" } as L,
+  intro: {
+    en: "I build and run the live Zoom seminars, some with more than 30,000 attendees, and travel with the team to film forums, university events and podcasts in Saudi Arabia, Bahrain and the UAE.",
+    ar: "أجهّز وأدير ندوات زوم المباشرة، وبعضها بحضور أكثر من 30 ألف شخص، وأسافر مع الفريق لتصوير الملتقيات والفعاليات الجامعية والبودكاست في السعودية والبحرين والإمارات.",
+  } as L,
+  rigTitle: { en: "My live setup", ar: "تجهيز البث المباشر" } as L,
+  rig: [
+    { step: { en: "Cameras", ar: "الكاميرات" } as L, detail: { en: "Sony multi-cam, DJI Ronin gimbals", ar: "عدة كاميرات سوني وجيمبال DJI Ronin" } as L, logo: "/logos/dji.svg" },
+    { step: { en: "Mics and lighting", ar: "المايكات والإضاءة" } as L, detail: { en: "Wireless mics, key and fill lights", ar: "مايكات لاسلكية وإضاءة رئيسية وتعبئة" } as L },
+    { step: { en: "RØDECaster Video", ar: "RØDECaster Video" } as L, detail: { en: "Switching, scenes, audio mix", ar: "تبديل الكاميرات والمشاهد ومكس الصوت" } as L },
+    { step: { en: "Stream Deck", ar: "Stream Deck" } as L, detail: { en: "One-button scenes and overlays", ar: "مشاهد وعناصر بضغطة زر" } as L, logo: "/logos/elgato.svg" },
+    { step: { en: "Zoom", ar: "زوم" } as L, detail: { en: "Seminars for 30,000+ people", ar: "ندوات لأكثر من 30 ألف شخص" } as L },
+  ],
+  team: {
+    src: "/video/stills/riyadh-idp-team.webp",
+    caption: { en: "Me (second from left, on the gimbal) with Abdulrahman Hijazy and the team, covering the IDP study-abroad expo", ar: "أنا (الثاني من اليسار، على الجيمبال) مع عبدالرحمن حجازي والفريق، في تغطية معرض IDP للدراسة بالخارج" } as L,
+    alt: { en: "Mohamed holding a Sony camera on a gimbal, next to Abdulrahman Hijazy in a grey thobe with a lapel mic and two crew members, in a chandeliered ballroom", ar: "محمد يحمل كاميرا سوني على جيمبال، بجانب عبدالرحمن حجازي بثوب رمادي ومايك لاسلكي واثنين من الفريق، في قاعة بثريات" } as L,
+  },
+  btsTitle: { en: "Behind the switcher", ar: "خلف جهاز التبديل" } as L,
+  btsIntro: {
+    en: "That’s me at the desk: switching cameras live on the RØDECaster Video, firing scenes from the Stream Deck, rigging the gimbal, and running the cohort launch in our studio.",
+    ar: "هذا أنا على المكتب: أبدّل الكاميرات مباشرة على RØDECaster Video، وأشغّل المشاهد من Stream Deck، وأجهّز الجيمبال، وأدير بث إطلاق الدفعة في الاستوديو.",
+  } as L,
+  btsClip: {
+    id: "bts-switcher",
+    title: { en: "Live switching, behind the scenes", ar: "تبديل مباشر، من الكواليس" },
+    kind: { en: "Dalilk studio", ar: "استوديو دليلك" },
+    role: { en: "Live switching, scenes, audio", ar: "تبديل مباشر ومشاهد وصوت" },
+    src: "/video/bts/switcher.mp4",
+    poster: "/video/posters/bts-switcher.webp",
+    duration: "0:20",
+  } satisfies Clip,
+  btsPhotos: [
+    { src: "/video/bts/rodecaster.webp", ratio: "4/3", caption: { en: "Switching a live seminar on the RØDECaster Video", ar: "تبديل ندوة مباشرة على RØDECaster Video" } as L, alt: { en: "Mohamed at a desk operating a RØDECaster Video switcher next to a laptop", ar: "محمد على مكتب يشغّل جهاز RØDECaster Video بجانب لابتوب" } as L },
+    { src: "/video/bts/gimbal-rig.webp", ratio: "4/3", caption: { en: "Rigging the camera on the gimbal", ar: "تركيب الكاميرا على الجيمبال" } as L, alt: { en: "Mohamed balancing a camera with a monitor on a gimbal mounted on a tripod", ar: "محمد يضبط كاميرا وشاشة على جيمبال فوق حامل" } as L },
+    { src: "/video/bts/control-room.webp", ratio: "4/3", caption: { en: "The control desk: switcher, monitors, Stream Deck", ar: "مكتب التحكم: جهاز التبديل والشاشات وStream Deck" } as L, alt: { en: "Mohamed behind two monitors and a keyboard in a studio with lights and tripods", ar: "محمد خلف شاشتين ولوحة مفاتيح في استوديو بإضاءة وحوامل" } as L },
+    { src: "/video/bts/live-monitor.webp", ratio: "3/4", caption: { en: "Watching the feed during a live session", ar: "متابعة الصورة أثناء بث مباشر" } as L, alt: { en: "Mohamed seated beside a camera on a tripod with a monitor, facing a lit stage screen", ar: "محمد جالس بجانب كاميرا على حامل وشاشة، أمام شاشة مسرح مضاءة" } as L },
+    { src: "/video/bts/robot-launch.webp", ratio: "3/4", caption: { en: "Cohort launch live, with a humanoid robot on set", ar: "بث إطلاق الدفعة، مع روبوت بشري في الاستوديو" } as L, alt: { en: "Mohamed adjusting a humanoid robot in front of a large LED screen showing the launch title", ar: "محمد يضبط روبوتًا بشريًا أمام شاشة LED كبيرة عليها عنوان الإطلاق" } as L },
+  ],
+  places: { en: "Riyadh · Jeddah · Dammam · Bahrain · Dubai", ar: "الرياض · جدة · الدمام · البحرين · دبي" } as L,
+};
+
+export const work = {
+  title: { en: "Selected work", ar: "أعمال مختارة" } as L,
+  intro: {
+    en: "The showreel, then vertical edits for Reels and TikTok: fast pacing, motion graphics, animated Arabic captions and sound design.",
+    ar: "الشوريل، ثم مونتاج عمودي للريلز وتيك توك: إيقاع سريع وموشن جرافيك وكابشن عربي متحرك وتصميم صوت.",
+  } as L,
+  otherClients: { en: "Other clients", ar: "عملاء آخرون" } as L,
+};
 
 export const showreel = {
   title: { en: "Showreel", ar: "الشوريل" } as L,
@@ -190,12 +434,19 @@ export const stills: { src: string; caption: L; place: L; alt: L }[] = [
 ];
 
 export const ai = {
-  title: { en: "Generative AI films", ar: "أفلام بالذكاء الاصطناعي" } as L,
+  title: { en: "Generative AI", ar: "الذكاء الاصطناعي التوليدي" } as L,
   intro: {
-    en: "No camera, no actors. I write the prompts, generate and pick the shots, keep characters consistent, then edit, grade and finish the sound.",
-    ar: "بلا كاميرا وبلا ممثلين. أكتب البرومبت، وأولّد اللقطات وأختارها، وأحافظ على ثبات الشخصيات، ثم أعمل المونتاج والتلوين والصوت.",
+    en: "I work with generative models three ways: through aggregators like Higgsfield and Magnific, through custom API builds, and locally with ComfyUI. These films have no camera and no actors: I write the prompts, generate and pick the shots, keep characters consistent, then edit, grade and finish the sound.",
+    ar: "أعمل مع النماذج التوليدية بثلاث طرق: عبر منصات تجمع النماذج مثل Higgsfield وMagnific، وعبر ربط مخصص بالـ API، ومحليًا عبر ComfyUI. هذه الأفلام بلا كاميرا وبلا ممثلين: أكتب البرومبت، وأولّد اللقطات وأختارها، وأحافظ على ثبات الشخصيات، ثم أعمل المونتاج والتلوين والصوت.",
   } as L,
-  toolsTitle: { en: "How I use AI in the edit", ar: "كيف أستخدم الذكاء الاصطناعي في المونتاج" } as L,
+  toolsTitle: { en: "Platforms and pipelines", ar: "المنصات ومسارات العمل" } as L,
+  modelsTitle: { en: "Models I work with", ar: "النماذج التي أعمل بها" } as L,
+  modelsNote: { en: "I pick the model per shot: whichever gives the best result for that motion, face or style.", ar: "أختار النموذج لكل لقطة: الأفضل لتلك الحركة أو الوجه أو الستايل." } as L,
+  routes: [
+    { title: { en: "Aggregators", ar: "منصات النماذج" } as L, body: { en: "Higgsfield and Magnific: the latest image and video models in one place, fast to compare.", ar: "Higgsfield وMagnific: أحدث نماذج الصور والفيديو في مكان واحد، وسهل المقارنة بينها." } as L },
+    { title: { en: "Custom API builds", ar: "ربط مخصص بالـ API" } as L, body: { en: "Scripts that call model APIs directly for batch jobs and repeatable pipelines.", ar: "سكربتات تستدعي النماذج مباشرة للمهام الكبيرة والمسارات المتكررة." } as L },
+    { title: { en: "Local models", ar: "نماذج محلية" } as L, body: { en: "ComfyUI workflows on my own machine, for full control and private footage.", ar: "مسارات ComfyUI على جهازي، لتحكم كامل وخصوصية اللقطات." } as L },
+  ],
 };
 
 export const aiClips: Clip[] = [
@@ -228,12 +479,55 @@ export const aiClips: Clip[] = [
   },
 ];
 
-export const aiUses: { tool: string; use: L }[] = [
-  { tool: "Magnific", use: { en: "Images, illustrations, B-roll, upscaling", ar: "صور ورسومات وبي رول وتكبير الدقة" } },
-  { tool: "Higgsfield", use: { en: "AI video shots and camera moves", ar: "لقطات فيديو وحركات كاميرا بالذكاء الاصطناعي" } },
-  { tool: "ComfyUI", use: { en: "Custom image and video workflows", ar: "مسارات عمل مخصصة للصور والفيديو" } },
-  { tool: "ElevenLabs", use: { en: "Voice-over, voice changing, sound effects", ar: "تعليق صوتي وتغيير الصوت ومؤثرات صوتية" } },
-  { tool: "Seedance · Runway", use: { en: "Fixing footage, e.g. removing burned-in captions", ar: "إصلاح اللقطات، مثل إزالة الكابشن المطبوع" } },
+/** logo: a PNG app icon (shown as is) or a single-colour SVG (tinted to the text colour). */
+export const aiUses: { tool: string; logo?: string; use: L }[] = [
+  { tool: "Higgsfield", logo: "/logos/higgsfield.png", use: { en: "AI video shots, camera moves, characters", ar: "لقطات فيديو وحركات كاميرا وشخصيات" } },
+  { tool: "Magnific", logo: "/logos/magnific.png", use: { en: "Images, B-roll, upscaling, relighting", ar: "صور وبي رول وتكبير دقة وإعادة إضاءة" } },
+  { tool: "ComfyUI", logo: "/logos/comfyui.png", use: { en: "Local models and custom node workflows", ar: "نماذج محلية ومسارات عمل مخصصة" } },
+  { tool: "ElevenLabs", logo: "/logos/elevenlabs.svg", use: { en: "Voice-over, voice changing, sound effects", ar: "تعليق صوتي وتغيير الصوت ومؤثرات صوتية" } },
+  { tool: "Seedance", logo: "/logos/bytedance.svg", use: { en: "Video generation and footage fixes", ar: "توليد فيديو وإصلاح اللقطات" } },
+  { tool: "Runway", logo: "/logos/runway.png", use: { en: "Clean-up, e.g. removing burned-in captions", ar: "تنظيف اللقطات، مثل إزالة الكابشن المطبوع" } },
+  { tool: "Custom APIs", use: { en: "Batch generation through direct model APIs", ar: "توليد بالجملة عبر الـ API مباشرة" } },
+];
+
+/** Models I use through the aggregators, direct APIs or locally. */
+export const aiModels: { group: L; items: { name: string; logo?: string }[] }[] = [
+  {
+    group: { en: "Video", ar: "فيديو" },
+    items: [
+      { name: "Veo 3", logo: "/logos/veo.png" },
+      { name: "Kling", logo: "/logos/kling.png" },
+      { name: "Sora", logo: "/logos/openai.svg" },
+      { name: "Seedance", logo: "/logos/bytedance.svg" },
+      { name: "Hailuo", logo: "/logos/hailuo.png" },
+      { name: "Wan", logo: "/logos/wan.png" },
+      { name: "Runway", logo: "/logos/runway.png" },
+      { name: "Luma", logo: "/logos/luma.png" },
+    ],
+  },
+  {
+    group: { en: "Image", ar: "صور" },
+    items: [
+      { name: "Nano Banana", logo: "/logos/googlegemini.svg" },
+      { name: "GPT Image", logo: "/logos/openai.svg" },
+      { name: "Flux", logo: "/logos/flux.png" },
+      { name: "Seedream", logo: "/logos/bytedance.svg" },
+      { name: "Midjourney" },
+      { name: "Magnific", logo: "/logos/magnific.png" },
+    ],
+  },
+  {
+    group: { en: "Voice and music", ar: "صوت وموسيقى" },
+    items: [
+      { name: "ElevenLabs", logo: "/logos/elevenlabs.svg" },
+      { name: "Suno", logo: "/logos/suno.png" },
+    ],
+  },
+];
+
+export const editTools: { tool: string; logo: string }[] = [
+  { tool: "Premiere Pro", logo: "/logos/adobepremierepro.svg" },
+  { tool: "After Effects", logo: "/logos/adobeaftereffects.svg" },
 ];
 
 export const skills: { title: L; items: L }[] = [
@@ -261,7 +555,7 @@ export const skills: { title: L; items: L }[] = [
 ];
 
 export const experience: { role: L; org: L; dates: string }[] = [
-  { role: { en: "Senior Video Editor", ar: "مونتير أول" }, org: { en: "Dalilk Academy, UAE", ar: "أكاديمية دليلك، الإمارات" }, dates: "2023 – now" },
+  { role: { en: "Senior Video Editor and Camera Operator", ar: "مونتير أول ومصوّر" }, org: { en: "Dalilk Academy (AmbitionHG), UAE", ar: "أكاديمية دليلك (AmbitionHG)، الإمارات" }, dates: "2023 – now" },
   { role: { en: "Content Creator", ar: "صانع محتوى" }, org: { en: "MyStation, 10 restaurant brands, UAE", ar: "MyStation، 10 علامات مطاعم، الإمارات" }, dates: "2022 – 2023" },
   { role: { en: "Filmmaker", ar: "صانع أفلام" }, org: { en: "RedCap Productions, Egypt", ar: "RedCap Productions، مصر" }, dates: "2019 – 2022" },
   { role: { en: "Videographer", ar: "مصوّر فيديو" }, org: { en: "Alexandria University, Egypt", ar: "جامعة الإسكندرية، مصر" }, dates: "2020 – 2022" },
