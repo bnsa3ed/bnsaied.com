@@ -15,7 +15,7 @@ import {
   channels,
   channelsSection,
   type Clip,
-  credits,
+  clients,
   editTools,
   experience,
   facts,
@@ -362,14 +362,32 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
           </details>
         )}
 
-        <div className="mt-12 border-t border-line pt-6 md:mt-14">
-          <h3 className="text-[0.9375rem] font-medium text-muted">{work.otherClients[lang]}</h3>
-          <p className="mt-2 text-[1rem] leading-relaxed font-medium text-ink">
-            {credits
-              .filter((c) => c.name.en !== "Dalilk Academy")
-              .map((c) => c.name[lang])
-              .join(" · ")}
-          </p>
+        <div className="mt-12 border-t border-line pt-8 md:mt-14">
+          <h3 className="text-[1.125rem] font-semibold">{work.otherClients[lang]}</h3>
+          <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            {clients.map((c) => (
+              <li key={c.name.en} className="flex flex-col">
+                <div className="flex h-24 items-center justify-center rounded-2xl bg-paper px-4">
+                  {c.logo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={c.logo}
+                      alt={c.name[lang]}
+                      loading="lazy"
+                      style={{ height: c.logoH ?? 32 }}
+                      className="w-auto max-w-full object-contain"
+                    />
+                  ) : (
+                    <span className="text-center text-[1rem] font-semibold leading-tight text-ink">{c.name[lang]}</span>
+                  )}
+                </div>
+                <p className="mt-2 text-[0.8125rem] leading-snug text-muted">
+                  {c.logo && <span className="sr-only">{c.name[lang]}: </span>}
+                  {c.what[lang]}
+                </p>
+              </li>
+            ))}
+          </ul>
         </div>
       </Panel>
 
@@ -702,12 +720,20 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
           ))}
         </ul>
         <ul className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-[0.9375rem] font-medium text-ink">
-          {[...editTools, { tool: "DJI Ronin", logo: "/logos/dji.svg" }, { tool: "Stream Deck", logo: "/logos/elgato.svg" }].map((t) => (
+          {[
+            ...editTools,
+            { tool: "DJI Ronin", logo: "/logos/dji.svg" },
+            { tool: "Sennheiser", logo: "/logos/sennheiser.svg" },
+            { tool: "Stream Deck", logo: "/logos/elgato.svg" },
+          ].map((t) => (
             <li key={t.tool} className="flex items-center gap-2">
               <Logo src={t.logo} label="" size={20} />
               <span dir="ltr">{t.tool}</span>
             </li>
           ))}
+          <li dir="ltr">Sony FX3 · A7S III</li>
+          <li dir="ltr">RØDE</li>
+          <li dir="ltr">Nanlite</li>
           <li dir="ltr">RØDECaster Video</li>
           <li dir="ltr">Zoom</li>
         </ul>

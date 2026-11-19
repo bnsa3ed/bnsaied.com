@@ -244,8 +244,8 @@ export const live = {
   } as L,
   rigTitle: { en: "My live setup", ar: "تجهيز البث المباشر" } as L,
   rig: [
-    { step: { en: "Cameras", ar: "الكاميرات" } as L, detail: { en: "Sony multi-cam, DJI Ronin gimbals", ar: "عدة كاميرات سوني وجيمبال DJI Ronin" } as L, logo: "/logos/dji.svg" },
-    { step: { en: "Mics and lighting", ar: "المايكات والإضاءة" } as L, detail: { en: "Wireless mics, key and fill lights", ar: "مايكات لاسلكية وإضاءة رئيسية وتعبئة" } as L },
+    { step: { en: "Cameras", ar: "الكاميرات" } as L, detail: { en: "Sony FX3 and A7S III, on DJI Ronin gimbals", ar: "سوني FX3 وA7S III على جيمبال DJI Ronin" } as L, logo: "/logos/dji.svg" },
+    { step: { en: "Mics and lighting", ar: "المايكات والإضاءة" } as L, detail: { en: "Sennheiser and RØDE wireless mics, Nanlite lights", ar: "مايكات Sennheiser وRØDE لاسلكية، وإضاءة Nanlite" } as L },
     { step: { en: "RØDECaster Video", ar: "RØDECaster Video" } as L, detail: { en: "Switching, scenes, audio mix", ar: "تبديل الكاميرات والمشاهد ومكس الصوت" } as L },
     { step: { en: "Stream Deck", ar: "Stream Deck" } as L, detail: { en: "One-button scenes and overlays", ar: "مشاهد وعناصر بضغطة زر" } as L, logo: "/logos/elgato.svg" },
     { step: { en: "Zoom", ar: "زوم" } as L, detail: { en: "Seminars for 30,000+ people", ar: "ندوات لأكثر من 30 ألف شخص" } as L },
@@ -310,6 +310,16 @@ export const credits: { name: L; what: L }[] = [
   { name: { en: "ON-TIME Centre", ar: "ON-TIME Centre" }, what: { en: "Events and interviews", ar: "فعاليات ومقابلات" } },
   { name: { en: "Cards Restaurant", ar: "مطعم كاردز" }, what: { en: "Food and behind the scenes", ar: "طعام وكواليس" } },
   { name: { en: "Dalilk Academy", ar: "أكاديمية دليلك" }, what: { en: "YouTube, ads, courses", ar: "يوتيوب وإعلانات ودورات" } },
+];
+
+/** Clients before and alongside Dalilk. logo is optional: tiles without one show the name. */
+export const clients: { name: L; what: L; logo?: string; logoH?: number }[] = [
+  { name: { en: "UNFPA", ar: "صندوق الأمم المتحدة للسكان" }, what: { en: "Short film", ar: "فيلم قصير" }, logo: "/clients/unfpa.svg", logoH: 36 },
+  { name: { en: "Ministry of Finance, Saudi Arabia", ar: "وزارة المالية السعودية" }, what: { en: "Euromoney event", ar: "فعالية يوروموني" }, logo: "/clients/mof.png", logoH: 40 },
+  { name: { en: "L’Oréal (Dercos)", ar: "لوريال (ديركوس)" }, what: { en: "Doctor interview", ar: "مقابلة طبيب" }, logo: "/clients/loreal.svg", logoH: 20 },
+  { name: { en: "Memory Film", ar: "Memory Film" }, what: { en: "Short films", ar: "أفلام قصيرة" } },
+  { name: { en: "ON-TIME Centre", ar: "ON-TIME Centre" }, what: { en: "Events and interviews", ar: "فعاليات ومقابلات" } },
+  { name: { en: "Cards Restaurant", ar: "مطعم كاردز" }, what: { en: "Food and behind the scenes", ar: "طعام وكواليس" } },
 ];
 
 export const social = {
@@ -589,8 +599,8 @@ export const skills: { title: L; items: L }[] = [
   {
     title: { en: "Filming and production", ar: "التصوير والإنتاج" },
     items: {
-      en: "Camera and lighting, locations and sets, food styling, live-stream and Zoom events, planning shoots for courses.",
-      ar: "كاميرا وإضاءة، تجهيز المواقع والديكور، تنسيق الطعام، البث المباشر وفعاليات زوم، تخطيط تصوير الدورات.",
+      en: "Sony FX3 and A7S III, DJI Ronin gimbals, Sennheiser and RØDE audio, Nanlite lighting, locations and sets, live-stream and Zoom events, planning shoots for courses.",
+      ar: "سوني FX3 وA7S III، جيمبال DJI Ronin، صوت Sennheiser وRØDE، إضاءة Nanlite، تجهيز المواقع والديكور، البث المباشر وفعاليات زوم، تخطيط تصوير الدورات.",
     },
   },
   {
