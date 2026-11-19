@@ -440,6 +440,8 @@ export const ai = {
     ar: "أعمل مع النماذج التوليدية بثلاث طرق: عبر منصات تجمع النماذج مثل Higgsfield وMagnific، وعبر ربط مخصص بالـ API، ومحليًا عبر ComfyUI. هذه الأفلام بلا كاميرا وبلا ممثلين: أكتب البرومبت، وأولّد اللقطات وأختارها، وأحافظ على ثبات الشخصيات، ثم أعمل المونتاج والتلوين والصوت.",
   } as L,
   toolsTitle: { en: "Platforms and pipelines", ar: "المنصات ومسارات العمل" } as L,
+  filmsTitle: { en: "AI films and ads", ar: "أفلام وإعلانات بالذكاء الاصطناعي" } as L,
+  filmsNote: { en: "Best first. Every frame generated; every cut, caption and sound done by hand.", ar: "الأفضل أولًا. كل لقطة مولّدة، وكل قطع وكابشن وصوت بيدي." } as L,
   modelsTitle: { en: "Models I work with", ar: "النماذج التي أعمل بها" } as L,
   modelsNote: { en: "I pick the model per shot: whichever gives the best result for that motion, face or style.", ar: "أختار النموذج لكل لقطة: الأفضل لتلك الحركة أو الوجه أو الستايل." } as L,
   routes: [
@@ -449,7 +451,44 @@ export const ai = {
   ],
 };
 
+/** Ranked best first: realism, character consistency and edit quality. */
 export const aiClips: Clip[] = [
+  {
+    id: "ai-ziad-step",
+    title: { en: "Ziad’s STEP story", ar: "تجربة زياد مع الستيب" },
+    kind: { en: "Student story ad · Fully AI-generated", ar: "إعلان قصة طالب · مولّد بالكامل" },
+    role: { en: "Script, generation, edit, motion graphics", ar: "سكربت وتوليد ومونتاج وموشن جرافيك" },
+    src: "/video/ai-ziad-step.mp4",
+    poster: "/video/posters/ai-ziad-step.webp",
+    duration: "1:36",
+  },
+  {
+    id: "ai-noura-story",
+    title: { en: "Noura’s story", ar: "تجربة نورة" },
+    kind: { en: "Testimonial-style ad · Photoreal AI", ar: "إعلان بأسلوب تجربة · ذكاء اصطناعي واقعي" },
+    role: { en: "Generation, character consistency, edit", ar: "توليد وثبات الشخصية ومونتاج" },
+    src: "/video/ai-noura-story.mp4",
+    poster: "/video/posters/ai-noura-story.webp",
+    duration: "1:10",
+  },
+  {
+    id: "ai-abdulrahman-step",
+    title: { en: "STEP intensive course", ar: "الدورة المكثفة للستيب" },
+    kind: { en: "Course ad · Fully AI-generated", ar: "إعلان دورة · مولّد بالكامل" },
+    role: { en: "Generation, edit, captions", ar: "توليد ومونتاج وكابشن" },
+    src: "/video/ai-abdulrahman-step.mp4",
+    poster: "/video/posters/ai-abdulrahman-step.webp",
+    duration: "0:29",
+  },
+  {
+    id: "ai-fraud-awareness",
+    title: { en: "Fraud awareness", ar: "التوعية بالاحتيال" },
+    kind: { en: "Public awareness · Arabic + English", ar: "توعية عامة · عربي وإنجليزي" },
+    role: { en: "Prompts, generation, edit, captions", ar: "برومبت وتوليد ومونتاج وكابشن" },
+    src: "/video/ai-fraud-awareness.mp4",
+    poster: "/video/posters/ai-fraud-awareness.webp",
+    duration: "0:42",
+  },
   {
     id: "ai-backyard-coffee",
     title: { en: "Backyard coffee", ar: "قهوة Backyard" },
@@ -460,13 +499,22 @@ export const aiClips: Clip[] = [
     duration: "0:31",
   },
   {
-    id: "ai-fraud-awareness",
-    title: { en: "Fraud awareness", ar: "التوعية بالاحتيال" },
-    kind: { en: "Public awareness · Arabic + English", ar: "توعية عامة · عربي وإنجليزي" },
-    role: { en: "Prompts, generation, edit, captions", ar: "برومبت وتوليد ومونتاج وكابشن" },
-    src: "/video/ai-fraud-awareness.mp4",
-    poster: "/video/posters/ai-fraud-awareness.webp",
-    duration: "0:42",
+    id: "ai-coffee-types",
+    title: { en: "Coffee types", ar: "أنواع القهوة" },
+    kind: { en: "3D character reel · English lesson", ar: "ريل شخصيات ثلاثية الأبعاد · درس إنجليزي" },
+    role: { en: "Character design, generation, edit", ar: "تصميم الشخصيات وتوليد ومونتاج" },
+    src: "/video/ai-coffee-types.mp4",
+    poster: "/video/posters/ai-coffee-types.webp",
+    duration: "0:28",
+  },
+  {
+    id: "ai-oxford-book",
+    title: { en: "The talking dictionary", ar: "القاموس المتكلم" },
+    kind: { en: "3D character reel · English lesson", ar: "ريل شخصية ثلاثية الأبعاد · درس إنجليزي" },
+    role: { en: "Character, generation, edit", ar: "شخصية وتوليد ومونتاج" },
+    src: "/video/ai-oxford-book.mp4",
+    poster: "/video/posters/ai-oxford-book.webp",
+    duration: "0:24",
   },
   {
     id: "ai-character-film",

@@ -71,7 +71,7 @@ export function CaseCard({ item, lang, featured }: { item: CaseStudy; lang: Loca
             featured ? "text-[1.875rem] md:text-[2.5rem]" : "text-[1.5rem]"
           }`}
         >
-          <Link href={href} className="underline-offset-[6px] hover:underline">
+          <Link href={href} className="underline-offset-[6px] hover:underline relative after:absolute after:-inset-x-1 after:-inset-y-3 after:content-['']">
             {item.name[lang]}
           </Link>
         </h3>
@@ -157,7 +157,7 @@ export function MiniItem({ item, lang, level = 3 }: { item: ShippedItem | LabIte
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="underline decoration-line-strong underline-offset-4 hover:decoration-ink"
+              className="underline decoration-line-strong underline-offset-4 hover:decoration-ink relative after:absolute after:-inset-x-1 after:-inset-y-3 after:content-['']"
             >
               {item.name[lang]}
             </a>

@@ -130,18 +130,19 @@ function ChannelCard({ c, lang }: { c: Channel; lang: Locale }) {
   const ar = lang === "ar";
   return (
     <li className="flex flex-col rounded-2xl border border-line p-5">
-      <div className="flex items-center gap-3">
+      <a
+        href={c.youtube.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group/ch -m-1 flex items-center gap-3 rounded-xl p-1"
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={c.avatar} alt="" width={56} height={56} loading="lazy" className="h-14 w-14 shrink-0 rounded-full" />
         <div className="min-w-0">
-          <h3 className="font-semibold leading-snug text-ink">
-            <a href={c.youtube.url} target="_blank" rel="noopener noreferrer" className="hover:underline">
-              {c.name[lang]}
-            </a>
-          </h3>
+          <h3 className="font-semibold leading-snug text-ink group-hover/ch:underline">{c.name[lang]}</h3>
           <p className="text-[0.875rem] text-muted">{c.host[lang]}</p>
         </div>
-      </div>
+      </a>
 
       <p className="mt-5 flex flex-col">
         <span dir="ltr" className={`text-[2.25rem] font-semibold leading-none tracking-tight ${ar ? "text-end" : ""}`}>
@@ -152,16 +153,12 @@ function ChannelCard({ c, lang }: { c: Channel; lang: Locale }) {
       <p className="mt-1.5 text-[0.875rem] text-muted">
         {c.youtube.views && (
           <>
-            <span dir="ltr" className="tc">
-              {c.youtube.views}
-            </span>{" "}
+            <span dir="ltr">{c.youtube.views}</span>{" "}
             {channelsSection.views[lang]}
             {ar ? "، " : " · "}
           </>
         )}
-        <span dir="ltr" className="tc">
-          {c.youtube.videos}
-        </span>{" "}
+        <span dir="ltr">{c.youtube.videos}</span>{" "}
         {channelsSection.videos[lang]}
         {c.note && (
           <>
@@ -246,9 +243,12 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
         </p>
 
         {/* Channel avatars as a quick visual credit line */}
-        <a href="#channels" className="group mt-6 inline-flex items-center gap-3">
-          <span className="flex -space-x-3 rtl:space-x-reverse">
-            {channels.map((c) => (
+        <a
+          href="#channels"
+          className="group mt-6 flex w-fit flex-col items-start gap-2.5 sm:flex-row sm:items-center sm:gap-3"
+        >
+          <span className="flex shrink-0">
+            {channels.map((c, i) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 key={c.id}
@@ -256,11 +256,11 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
                 alt=""
                 width={40}
                 height={40}
-                className="h-10 w-10 rounded-full ring-2 ring-paper"
+                className={`h-10 w-10 shrink-0 rounded-full ring-2 ring-paper ${i > 0 ? "-ms-3" : ""}`}
               />
             ))}
           </span>
-          <span className="text-[0.9375rem] font-medium text-ink underline decoration-line-strong underline-offset-4 group-hover:decoration-ink">
+          <span className="inline-flex min-h-11 items-center text-[0.9375rem] font-medium text-ink underline decoration-line-strong underline-offset-4 group-hover:decoration-ink">
             {ar ? "8 قنوات، شاهدها بنفسك" : "8 channels, see them yourself"}
           </span>
         </a>
@@ -487,13 +487,9 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
                       i === 2 ? "bg-rec text-white" : "bg-paper text-ink"
                     }`}
                   >
-                    {r.logo ? (
-                      <Logo src={r.logo} label="" size={20} />
-                    ) : (
-                      <span dir="ltr" className="tc text-[0.875rem] font-semibold">
-                        {i + 1}
-                      </span>
-                    )}
+                    <span dir="ltr" className="text-[0.9375rem] font-semibold">
+                      {i + 1}
+                    </span>
                   </span>
                   <div className="pt-1.5">
                     <p dir={i === 2 || i === 3 ? "ltr" : undefined} className={`font-semibold ${ar && (i === 2 || i === 3) ? "text-end" : ""}`}>
@@ -597,7 +593,37 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
       <Panel id="ai" nav="ai" tone="dark">
         <SectionHead id="ai" title={ai.title[lang]} intro={ai.intro[lang]} tone="dark" />
 
-        <ul className="mb-14 grid gap-4 md:grid-cols-3">
+        <div className="group">
+          <h3 className="text-[1.25rem] font-semibold">{ai.filmsTitle[lang]}</h3>
+          <p className="mt-1 text-[0.9375rem] text-[#c9cdd5]">{ai.filmsNote[lang]}</p>
+          <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 md:gap-x-6">
+            {aiClips.map((c, i) => (
+              <ClipCard
+                key={c.id}
+                clip={c}
+                lang={lang}
+                tone="dark"
+                className={
+                  i < 4 ? "flex" : i < 6 ? "hidden sm:flex group-has-[:checked]:flex" : "hidden group-has-[:checked]:flex"
+                }
+              />
+            ))}
+          </ul>
+          {aiClips.length > 4 && (
+            <label className="mt-10 flex min-h-12 cursor-pointer items-center justify-center rounded-full font-medium text-panel ring-1 ring-white/30 hover:ring-white/60 group-has-[:checked]:hidden">
+              <input type="checkbox" className="sr-only" />
+              <span className="sm:hidden">
+                {ar ? `اعرض ${aiClips.length - 4} أفلام أخرى` : `Show ${aiClips.length - 4} more films`}
+              </span>
+              <span className="hidden sm:inline">
+                {ar ? `اعرض ${aiClips.length - 6} أفلام أخرى` : `Show ${aiClips.length - 6} more films`}
+              </span>
+            </label>
+          )}
+        </div>
+
+
+        <ul className="mt-16 mb-14 grid gap-4 border-t border-white/15 pt-10 md:grid-cols-3">
           {ai.routes.map((r) => (
             <li key={r.title.en} className="rounded-2xl bg-white/[0.06] p-6 ring-1 ring-white/10">
               <h3 className="font-semibold">{r.title[lang]}</h3>
@@ -662,11 +688,6 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
           ))}
         </div>
 
-        <ul className="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 border-t border-white/15 pt-10 sm:grid-cols-3 md:gap-x-6">
-          {aiClips.map((c) => (
-            <ClipCard key={c.id} clip={c} lang={lang} tone="dark" />
-          ))}
-        </ul>
       </Panel>
 
       {/* Skills and experience */}
@@ -681,13 +702,14 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
           ))}
         </ul>
         <ul className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-[0.9375rem] font-medium text-ink">
-          {[...editTools, { tool: "DJI Ronin", logo: "/logos/dji.svg" }, { tool: "Stream Deck", logo: "/logos/elgato.svg" }, { tool: "Zoom", logo: "/logos/zoom.svg" }].map((t) => (
+          {[...editTools, { tool: "DJI Ronin", logo: "/logos/dji.svg" }, { tool: "Stream Deck", logo: "/logos/elgato.svg" }].map((t) => (
             <li key={t.tool} className="flex items-center gap-2">
               <Logo src={t.logo} label="" size={20} />
               <span dir="ltr">{t.tool}</span>
             </li>
           ))}
           <li dir="ltr">RØDECaster Video</li>
+          <li dir="ltr">Zoom</li>
         </ul>
 
         <h3 className="mt-14 text-[1.25rem] font-semibold md:mt-16">{ar ? "الخبرة" : "Experience"}</h3>
