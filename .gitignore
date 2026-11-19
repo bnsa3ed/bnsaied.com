@@ -49,3 +49,6 @@ docs/project-inventory.md
 # private Germany master's application files (documents, IDs) — never commit or deploy
 /germany-masters/
 perosnal/
+
+# design review snapshots
+.impeccable/

@@ -34,6 +34,7 @@ export function VideoPlayer({
 }) {
   const [file, setFile] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
+  const [waiting, setWaiting] = useState(false);
   const video = useRef<HTMLVideoElement>(null);
   const wide = ratio === "16/9";
 
@@ -43,6 +44,7 @@ export function VideoPlayer({
 
   const start = () => {
     const small = srcSmall && window.matchMedia("(max-width: 767px)").matches;
+    setWaiting(true);
     setFile(small ? srcSmall : src);
   };
 
@@ -72,9 +74,22 @@ export function VideoPlayer({
           aria-label={label}
           onPlay={pauseOthers}
           onError={() => setFailed(true)}
+          onPlaying={() => setWaiting(false)}
+          onWaiting={() => setWaiting(true)}
+          onCanPlay={() => setWaiting(false)}
           className="absolute inset-0 h-full w-full bg-ink object-contain focus-inset"
         />
-      ) : failed ? (
+      ) : null}
+      {file && !failed && waiting && (
+        <span
+          role="status"
+          aria-label="Loading"
+          className="pointer-events-none absolute inset-0 flex items-center justify-center"
+        >
+          <span className="h-10 w-10 animate-spin rounded-full border-[3px] border-white/30 border-t-white motion-reduce:animate-none" />
+        </span>
+      )}
+      {file && !failed ? null : failed ? (
         <p className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center text-[0.9375rem] text-panel">
           {errorLabel}
           <a href={src} className="font-medium underline underline-offset-4">

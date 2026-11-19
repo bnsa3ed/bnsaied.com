@@ -13,6 +13,10 @@
   --line-strong: #7d8592;
   --rec: #ff3b1f;
   --rec-text: #c4260c;
+  /* Text on the dark ink panels, and the ink button hover. */
+  --on-ink-muted: #c9cdd5;
+  --on-ink-subtle: #9ea4ae;
+  --ink-hover: #2b2f37;
   --clip-v2: #dfe4f6;
   --clip-v2-edge: #5d6fb3;
   --clip-v3: #e7e2f4;
@@ -34,6 +38,9 @@
   --color-line-strong: var(--line-strong);
   --color-rec: var(--rec);
   --color-rec-text: var(--rec-text);
+  --color-on-ink-muted: var(--on-ink-muted);
+  --color-on-ink-subtle: var(--on-ink-subtle);
+  --color-ink-hover: var(--ink-hover);
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-arabic: var(--font-readex), var(--font-archivo), ui-sans-serif, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;

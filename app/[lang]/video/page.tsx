@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CopyEmail, LocalTime } from "@/components/ContactTools";
+import { HeroLoop } from "@/components/HeroLoop";
 import { Panel, SectionHead } from "@/components/SectionHead";
 import { StickyHireBar } from "@/components/StickyHireBar";
 import { VideoPlayer } from "@/components/VideoPlayer";
@@ -10,7 +11,6 @@ import {
   ai,
   aiClips,
   aiModels,
-  aiUses,
   type Channel,
   channels,
   channelsSection,
@@ -26,6 +26,7 @@ import {
   skills,
   socialClips,
   stills,
+  testimonial,
   videoContact,
   videoPage,
   work,
@@ -78,6 +79,36 @@ function Logo({ src, label, size = 28 }: { src: string; label: string; size?: nu
   );
 }
 
+/**
+ * CSS-only "show more" for the nearest .group: a real checkbox, so it works
+ * without JS, collapses again, and shows a focus ring for keyboard users.
+ */
+function ToggleMore({
+  more,
+  fewer,
+  className = "",
+  tone = "light",
+}: {
+  more: React.ReactNode;
+  fewer: string;
+  className?: string;
+  tone?: "light" | "dark";
+}) {
+  const ring =
+    tone === "dark"
+      ? "text-panel ring-white/30 hover:ring-white/60 has-[:focus-visible]:outline-white"
+      : "text-ink ring-line-strong hover:ring-ink has-[:focus-visible]:outline-ink";
+  return (
+    <label
+      className={`flex min-h-12 cursor-pointer items-center justify-center rounded-full font-medium ring-1 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-solid ${ring} ${className}`}
+    >
+      <input type="checkbox" className="sr-only" />
+      <span className="group-has-[:checked]:hidden">{more}</span>
+      <span className="hidden group-has-[:checked]:inline">{fewer}</span>
+    </label>
+  );
+}
+
 function ClipCard({
   clip,
   lang,
@@ -101,10 +132,10 @@ function ClipCard({
         ratio="9/16"
       />
       <h3 className="mt-3 text-[1rem] font-semibold leading-snug md:text-[1.0625rem]">{clip.title[lang]}</h3>
-      <p className={`mt-0.5 text-[0.875rem] leading-snug ${tone === "dark" ? "text-[#c9cdd5]" : "text-muted"}`}>
+      <p className={`mt-0.5 text-[0.875rem] leading-snug ${tone === "dark" ? "text-on-ink-muted" : "text-muted"}`}>
         {clip.kind[lang]}
       </p>
-      <p className={`mt-1 text-[0.8125rem] ${tone === "dark" ? "text-[#9ea4ae]" : "text-muted"}`}>{clip.role[lang]}</p>
+      <p className={`mt-1 text-[0.8125rem] ${tone === "dark" ? "text-on-ink-subtle" : "text-muted"}`}>{clip.role[lang]}</p>
     </li>
   );
 }
@@ -126,10 +157,12 @@ function PlatformStat({ href, icon, value, label }: { href: string; icon: string
   );
 }
 
-function ChannelCard({ c, lang }: { c: Channel; lang: Locale }) {
+function ChannelCard({ c, lang, hiddenOnPhone }: { c: Channel; lang: Locale; hiddenOnPhone?: boolean }) {
   const ar = lang === "ar";
   return (
-    <li className="flex flex-col rounded-2xl border border-line p-5">
+    <li
+      className={`flex-col rounded-2xl border border-line p-5 ${hiddenOnPhone ? "hidden sm:flex group-has-[:checked]:flex" : "flex"}`}
+    >
       <a
         href={c.youtube.url}
         target="_blank"
@@ -197,7 +230,7 @@ function ChannelCard({ c, lang }: { c: Channel; lang: Locale }) {
 const ghostBtn =
   "inline-flex min-h-12 items-center rounded-full px-6 font-medium text-ink ring-1 ring-line-strong hover:ring-ink";
 const solidBtn =
-  "inline-flex min-h-12 items-center rounded-full bg-ink px-6 font-medium text-panel hover:bg-[#2b2f37]";
+  "inline-flex min-h-12 items-center rounded-full bg-ink px-6 font-medium text-panel hover:bg-ink-hover";
 
 export default async function VideoPortfolio({ params }: PageProps<"/[lang]/video">) {
   const { lang: raw } = await params;
@@ -207,7 +240,6 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
   // Personal channels only; LinkedIn and WhatsApp get their own buttons.
   const profiles = profile.links.filter((l) => l.href && l.label !== "LinkedIn" && l.label !== "WhatsApp");
   const mailto = `mailto:${profile.email}?subject=${encodeURIComponent(videoContact.subject[lang])}`;
-  const firstClips = socialClips.slice(0, 4);
   const moreClips = socialClips.slice(4);
   const maxMonth = Math.max(...scale.months.map((m) => m.v));
   const maxSplit = Math.max(...scale.split.map((s) => s.v));
@@ -224,6 +256,8 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
         aria-labelledby="video-title"
         className="wrap scroll-mt-20 pt-8 pb-8 outline-none md:pt-16 md:pb-12"
       >
+        <div className="grid gap-x-12 [grid-template-areas:'head'_'media'_'body'] lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-center lg:[grid-template-areas:'head_media'_'body_media']">
+        <div className="[grid-area:head]">
         <p className="flex items-center gap-2 text-[0.9375rem] font-medium text-rec-text">
           <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-rec" />
           {videoPage.eyebrow[lang]}
@@ -233,11 +267,16 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
           className={`mt-3 max-w-5xl font-semibold tracking-tight text-balance text-ink md:mt-4 ${
             ar
               ? "text-[2rem] leading-[1.35] sm:text-[3rem] md:text-[3.5rem]"
-              : "type-narrow text-[2.5rem] leading-[0.98] sm:text-[4rem] md:text-[4.75rem]"
+              : "type-narrow text-[2.5rem] leading-[0.98] sm:text-[4rem] md:text-[4.75rem] lg:text-[4.25rem]"
           }`}
         >
           {videoPage.title[lang]}
         </h1>
+        </div>
+        <div className="mt-6 [grid-area:media] lg:mt-0">
+          <HeroLoop src="/video/hero-loop.mp4" poster="/video/posters/hero-loop.webp" />
+        </div>
+        <div className="[grid-area:body]">
         <p className="mt-6 max-w-3xl text-[1.125rem] leading-relaxed text-muted md:mt-8 md:text-[1.25rem]">
           {videoPage.lede[lang]}
         </p>
@@ -264,6 +303,8 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
             {ar ? "8 قنوات، شاهدها بنفسك" : "8 channels, see them yourself"}
           </span>
         </a>
+        </div>
+        </div>
 
         <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8 md:mt-12 md:grid-cols-4">
           {facts.map((f) => (
@@ -299,22 +340,45 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
       {/* The channels: the validation, each card links to the real thing */}
       <Panel id="channels" nav="channels">
         <SectionHead id="channels" title={channelsSection.title[lang]} intro={channelsSection.intro[lang]} />
-        <dl className="mb-10 grid grid-cols-2 gap-4 md:grid-cols-4">
+        <dl className="mb-8 flex flex-wrap gap-x-8 gap-y-3 border-y border-line py-4">
           {channelsSection.totals.map((t) => (
-            <div key={t.value} className="flex flex-col rounded-2xl bg-paper p-5">
-              <dt className="order-last mt-1 text-[0.875rem] text-muted">{t.label[lang]}</dt>
-              <dd dir="ltr" className={`text-[1.75rem] font-semibold leading-none tracking-tight ${ar ? "text-end" : ""}`}>
+            <div key={t.value} className="flex items-baseline gap-2">
+              <dd dir="ltr" className="text-[1.25rem] font-semibold tracking-tight">
                 {t.value}
               </dd>
+              <dt className="text-[0.9375rem] text-muted">{t.label[lang]}</dt>
             </div>
           ))}
         </dl>
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {channels.map((c) => (
-            <ChannelCard key={c.id} c={c} lang={lang} />
-          ))}
-        </ul>
+        <div className="group">
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {channels.map((c, i) => (
+              <ChannelCard key={c.id} c={c} lang={lang} hiddenOnPhone={i >= 4} />
+            ))}
+          </ul>
+          <ToggleMore
+            className="mt-6 sm:hidden"
+            more={channelsSection.showMore[lang]}
+            fewer={channelsSection.showFewer[lang]}
+          />
+        </div>
         <p className="mt-6 max-w-3xl text-[0.875rem] text-muted">{channelsSection.asOf[lang]}</p>
+        {testimonial.quote && (
+          <figure className="mt-12 grid gap-6 border-t border-line pt-10 md:grid-cols-[auto_1fr] md:items-start md:gap-10">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={testimonial.photo} alt="" width={96} height={96} loading="lazy" className="h-20 w-20 rounded-full md:h-24 md:w-24" />
+            <div>
+              <blockquote className="max-w-3xl text-[1.375rem] font-medium leading-snug tracking-tight text-ink md:text-[1.75rem]">
+                {testimonial.quote[lang]}
+              </blockquote>
+              <figcaption className="mt-4 text-[0.9375rem] text-muted">
+                <span className="font-semibold text-ink">{testimonial.name[lang]}</span>
+                {sep}
+                {testimonial.role[lang]}
+              </figcaption>
+            </div>
+          </figure>
+        )}
       </Panel>
 
       {/* Showreel and social: the craft, as proof of the volume */}
@@ -341,26 +405,16 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
           {showreel.intro[lang]}
         </p>
 
-        <ul className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 md:mt-14 md:gap-x-6">
-          {firstClips.map((c) => (
-            <ClipCard key={c.id} clip={c} lang={lang} />
-          ))}
-          {moreClips.map((c) => (
-            <ClipCard key={c.id} clip={c} lang={lang} className="hidden sm:flex" />
-          ))}
-        </ul>
-        {moreClips.length > 0 && (
-          <details className="group mt-8 sm:hidden">
-            <summary className="flex min-h-12 cursor-pointer list-none items-center justify-center rounded-full font-medium text-ink ring-1 ring-line-strong group-open:hidden [&::-webkit-details-marker]:hidden">
-              {videoContact.showMore[lang]}
-            </summary>
-            <ul className="grid grid-cols-2 gap-x-4 gap-y-10">
-              {moreClips.map((c) => (
-                <ClipCard key={c.id} clip={c} lang={lang} />
-              ))}
-            </ul>
-          </details>
-        )}
+        <div className="group mt-12 md:mt-14">
+          <ul className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 md:gap-x-6">
+            {socialClips.map((c, i) => (
+              <ClipCard key={c.id} clip={c} lang={lang} className={i < 4 ? "flex" : "hidden sm:flex group-has-[:checked]:flex"} />
+            ))}
+          </ul>
+          {moreClips.length > 0 && (
+            <ToggleMore className="mt-8 sm:hidden" more={videoContact.showMore[lang]} fewer={ar ? "اعرض أقل" : "Show fewer"} />
+          )}
+        </div>
 
         <div className="mt-12 border-t border-line pt-8 md:mt-14">
           <h3 className="text-[1.125rem] font-semibold">{work.otherClients[lang]}</h3>
@@ -460,14 +514,19 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
         </div>
 
         <h3 className="mt-16 text-[1.25rem] font-semibold">{scale.howTitle[lang]}</h3>
-        <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {scale.how.map((h) => (
-            <li key={h.title.en} className="rounded-2xl bg-paper p-6">
-              <h4 className="font-semibold leading-snug">{h.title[lang]}</h4>
-              <p className="mt-2 text-[0.9375rem] text-muted">{h.body[lang]}</p>
+        <ol className="mt-6 grid gap-x-10 gap-y-8 sm:grid-cols-2">
+          {scale.how.map((h, i) => (
+            <li key={h.title.en} className="flex gap-4">
+              <span dir="ltr" aria-hidden="true" className="text-[2rem] font-semibold leading-none text-rec">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <h4 className="font-semibold leading-snug">{h.title[lang]}</h4>
+                <p className="mt-1 text-[0.9375rem] text-muted">{h.body[lang]}</p>
+              </div>
             </li>
           ))}
-        </ul>
+        </ol>
       </Panel>
 
       {/* Live seminars and events */}
@@ -613,7 +672,7 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
 
         <div className="group">
           <h3 className="text-[1.25rem] font-semibold">{ai.filmsTitle[lang]}</h3>
-          <p className="mt-1 text-[0.9375rem] text-[#c9cdd5]">{ai.filmsNote[lang]}</p>
+          <p className="mt-1 text-[0.9375rem] text-on-ink-muted">{ai.filmsNote[lang]}</p>
           <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 md:gap-x-6">
             {aiClips.map((c, i) => (
               <ClipCard
@@ -628,60 +687,41 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
             ))}
           </ul>
           {aiClips.length > 4 && (
-            <label className="mt-10 flex min-h-12 cursor-pointer items-center justify-center rounded-full font-medium text-panel ring-1 ring-white/30 hover:ring-white/60 group-has-[:checked]:hidden">
-              <input type="checkbox" className="sr-only" />
-              <span className="sm:hidden">
-                {ar ? `اعرض ${aiClips.length - 4} أفلام أخرى` : `Show ${aiClips.length - 4} more films`}
-              </span>
-              <span className="hidden sm:inline">
-                {ar ? `اعرض ${aiClips.length - 6} أفلام أخرى` : `Show ${aiClips.length - 6} more films`}
-              </span>
-            </label>
+            <ToggleMore
+              tone="dark"
+              className="mt-10"
+              more={
+                <>
+                  <span className="sm:hidden">
+                    {ar ? `اعرض ${aiClips.length - 4} أفلام أخرى` : `Show ${aiClips.length - 4} more films`}
+                  </span>
+                  <span className="hidden sm:inline">
+                    {ar ? `اعرض ${aiClips.length - 6} أفلام أخرى` : `Show ${aiClips.length - 6} more films`}
+                  </span>
+                </>
+              }
+              fewer={ai.showFewer[lang]}
+            />
           )}
         </div>
 
 
-        <ul className="mt-16 mb-14 grid gap-4 border-t border-white/15 pt-10 md:grid-cols-3">
+        <ul className="mt-16 grid gap-x-10 gap-y-6 border-t border-white/15 pt-10 md:grid-cols-3">
           {ai.routes.map((r) => (
-            <li key={r.title.en} className="rounded-2xl bg-white/[0.06] p-6 ring-1 ring-white/10">
+            <li key={r.title.en}>
               <h3 className="font-semibold">{r.title[lang]}</h3>
-              <p className="mt-2 text-[0.9375rem] text-[#c9cdd5]">{r.body[lang]}</p>
+              <p className="mt-2 text-[0.9375rem] text-on-ink-muted">{r.body[lang]}</p>
             </li>
           ))}
         </ul>
 
-        <h3 className="text-[1.25rem] font-semibold">{ai.toolsTitle[lang]}</h3>
-        <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {aiUses.map((u) => (
-            <li key={u.tool} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4 ring-1 ring-white/10">
-              {u.logo ? (
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-white/10 text-panel">
-                  <Logo src={u.logo} label="" size={u.logo.endsWith(".svg") ? 22 : 40} />
-                </span>
-              ) : (
-                <span
-                  aria-hidden="true"
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-white/10 font-mono text-[0.875rem] text-panel"
-                >
-                  {"</>"}
-                </span>
-              )}
-              <div className="min-w-0">
-                <p dir="ltr" className={`font-semibold text-panel ${ar ? "text-end" : ""}`}>
-                  {u.tool}
-                </p>
-                <p className="mt-0.5 text-[0.875rem] leading-snug text-[#c9cdd5]">{u.use[lang]}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
 
         <h3 className="mt-14 text-[1.25rem] font-semibold">{ai.modelsTitle[lang]}</h3>
-        <p className="mt-1 text-[0.9375rem] text-[#c9cdd5]">{ai.modelsNote[lang]}</p>
+        <p className="mt-1 text-[0.9375rem] text-on-ink-muted">{ai.modelsNote[lang]}</p>
         <div className="mt-6 flex flex-col gap-5">
           {aiModels.map((g) => (
             <div key={g.group.en} className="grid gap-3 md:grid-cols-[9rem_1fr] md:items-start">
-              <p className="pt-2 text-[0.875rem] font-medium text-[#9ea4ae]">{g.group[lang]}</p>
+              <p className="pt-2 text-[0.875rem] font-medium text-on-ink-subtle">{g.group[lang]}</p>
               <ul className="flex flex-wrap gap-2">
                 {g.items.map((m) => (
                   <li
@@ -711,9 +751,9 @@ export default async function VideoPortfolio({ params }: PageProps<"/[lang]/vide
       {/* Skills and experience */}
       <Panel id="about" nav="about">
         <SectionHead id="about" title={ar ? "ماذا أقدّم" : "What I bring"} />
-        <ul className="grid gap-4 md:grid-cols-3">
+        <ul className="grid gap-x-10 gap-y-8 md:grid-cols-3">
           {skills.map((s) => (
-            <li key={s.title.en} className="rounded-2xl bg-paper p-6">
+            <li key={s.title.en} className="border-t-2 border-ink pt-4">
               <h3 className="text-[1.125rem] font-semibold leading-snug">{s.title[lang]}</h3>
               <p className="mt-2 text-[0.9375rem] text-muted">{s.items[lang]}</p>
             </li>

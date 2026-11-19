@@ -80,6 +80,8 @@ export const channelsSection = {
   views: { en: "views", ar: "مشاهدة" } as L,
   videos: { en: "videos", ar: "فيديو" } as L,
   visit: { en: "Website", ar: "الموقع" } as L,
+  showMore: { en: "Show 4 more channels", ar: "اعرض 4 قنوات أخرى" } as L,
+  showFewer: { en: "Show fewer", ar: "اعرض أقل" } as L,
 };
 
 export const channels: Channel[] = [
@@ -165,6 +167,17 @@ export const channels: Channel[] = [
     note: { en: "New brand, launched Nov 2024", ar: "علامة جديدة، انطلقت نوفمبر 2024" },
   },
 ];
+
+/**
+ * A quote from someone I work for. Leave quote as null until Mohamed sends the
+ * real words: the block only renders when there is a quote. Never invent one.
+ */
+export const testimonial: { quote: L | null; name: L; role: L; photo: string } = {
+  quote: null,
+  name: { en: "Abdulrahman Hijazy", ar: "عبدالرحمن حجازي" },
+  role: { en: "Founder, Dalilk Academy", ar: "مؤسس أكاديمية دليلك" },
+  photo: "/brands/dalilk-english.jpg",
+};
 
 /** From my task sheet ("new Tasks" + "2025" tabs), pulled 19 Nov 2026. */
 export const scale = {
@@ -451,6 +464,7 @@ export const ai = {
   } as L,
   toolsTitle: { en: "Platforms and pipelines", ar: "المنصات ومسارات العمل" } as L,
   filmsTitle: { en: "AI films and ads", ar: "أفلام وإعلانات بالذكاء الاصطناعي" } as L,
+  showFewer: { en: "Show fewer", ar: "اعرض أقل" } as L,
   filmsNote: { en: "Best first. Every frame generated; every cut, caption and sound done by hand.", ar: "الأفضل أولًا. كل لقطة مولّدة، وكل قطع وكابشن وصوت بيدي." } as L,
   modelsTitle: { en: "Models I work with", ar: "النماذج التي أعمل بها" } as L,
   modelsNote: { en: "I pick the model per shot: whichever gives the best result for that motion, face or style.", ar: "أختار النموذج لكل لقطة: الأفضل لتلك الحركة أو الوجه أو الستايل." } as L,
@@ -551,6 +565,15 @@ export const aiUses: { tool: string; logo?: string; use: L }[] = [
 /** Models I use through the aggregators, direct APIs or locally. */
 export const aiModels: { group: L; items: { name: string; logo?: string }[] }[] = [
   {
+    group: { en: "Platforms", ar: "المنصات" },
+    items: [
+      { name: "Higgsfield", logo: "/logos/higgsfield.png" },
+      { name: "Magnific", logo: "/logos/magnific.png" },
+      { name: "ComfyUI (local)", logo: "/logos/comfyui.png" },
+      { name: "Custom API pipelines" },
+    ],
+  },
+  {
     group: { en: "Video", ar: "فيديو" },
     items: [
       { name: "Veo 3", logo: "/logos/veo.png" },
@@ -571,7 +594,6 @@ export const aiModels: { group: L; items: { name: string; logo?: string }[] }[] 
       { name: "Flux", logo: "/logos/flux.png" },
       { name: "Seedream", logo: "/logos/bytedance.svg" },
       { name: "Midjourney" },
-      { name: "Magnific", logo: "/logos/magnific.png" },
     ],
   },
   {
